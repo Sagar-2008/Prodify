@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Landing.css";
 
 export default function Landing() {
@@ -17,6 +19,15 @@ export default function Landing() {
     console.log('Opening demo video...');
     // You can implement a modal here
   };
+  
+  const navigate = useNavigate();
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
 
   return (
     <div className="landing">
@@ -251,7 +262,7 @@ export default function Landing() {
         <p>
           Start building habits that last — one focused session at a time.
         </p>
-        <button className="btn-primary btn-large">
+        <button className="btn-primary btn-large" onClick={handleSignup}>
           Start with Prodify — It's Free
         </button>
         <p className="cta-note">
