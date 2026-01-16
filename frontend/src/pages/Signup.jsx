@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import "../styles/Auth.css";
 
@@ -5,19 +7,28 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
-    // later: call backend
+
+    try {
+      await axios.post("http://localhost:5000/auth/register", {
+        email,
+        password,
+      });
+      localStorage.setItem("email", email); // IMPORTANT
+      navigate("/verify-otp");
+    } catch (err) {
+      alert(err.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
         <h2>Create your account</h2>
-        <p className="auth-sub">
-          Start building habits that actually stick.
-        </p>
+        <p className="auth-sub">Start building habits that actually stick.</p>
 
         <form onSubmit={handleSubmit}>
           <label>Email</label>
