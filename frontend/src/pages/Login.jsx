@@ -16,14 +16,10 @@ export default function Login() {
         email,
         password,
       });
-      localStorage.setItem("user", JSON.stringify(res.data));
-      navigate("/dashboard");
 
+      localStorage.setItem("token", res.data.token);
       alert("Login successful ✅");
-      console.log(res.data);
-
-      // later: store JWT here
-      navigate("/"); // temporary redirect
+      navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
@@ -52,9 +48,7 @@ export default function Login() {
             required
           />
 
-          <button type="submit" className="btn-primary auth-btn">
-            Login
-          </button>
+          <button className="btn-primary auth-btn">Login</button>
         </form>
       </div>
     </div>
