@@ -1,0 +1,227 @@
+.pomodoro-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+}
+
+.pomodoro-settings-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.settings-btn {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.settings-btn:hover {
+    background: #6366f1;
+    transform: scale(1.05);
+}
+
+.pomodoro-settings {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.setting-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-group label {
+    font-size: 12px;
+    opacity: 0.8;
+    font-weight: 600;
+}
+
+.setting-group input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #4f46e5;
+    background: #111827;
+    color: #9aa1ff;
+    font-size: 14px;
+    outline: none;
+}
+
+.setting-group input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.setting-group input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.close-settings-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.close-settings-btn:hover {
+    background: #6366f1;
+}
+
+.pomodoro-mode-indicator {
+    margin-bottom: 20px;
+}
+
+.mode {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.mode.session {
+    background: rgba(79, 70, 229, 0.2);
+    color: #9aa1ff;
+}
+
+.mode.break {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.pomodoro-timer {
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #9aa1ff;
+    margin-bottom: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.pomodoro-task-section {
+    margin-bottom: 28px;
+}
+
+.pomodoro-task {
+    opacity: 0.7;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.pomodoro-task:hover {
+    background: rgba(79, 70, 229, 0.1);
+    opacity: 1;
+}
+
+.edit-hint {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-left: 8px;
+}
+
+.task-edit {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.task-edit input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid #4f46e5;
+    background: #111827;
+    color: #9aa1ff;
+    font-size: 14px;
+    outline: none;
+    flex: 1;
+    min-width: 200px;
+}
+
+.task-edit input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.task-edit button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.task-edit button:hover {
+    background: #6366f1;
+}
+
+.task-edit button:last-child {
+    background: #6b7280;
+}
+
+.task-edit button:last-child:hover {
+    background: #9ca3af;
+}
+
+.pomodoro-controls {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pomodoro-controls button {
+    padding: 12px 22px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background: #4f46e5;
+    color: white;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pomodoro-controls button:hover {
+    background: #6366f1;
+    transform: translateY(-2px);
+}
+
+.pomodoro-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}

@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { db } from "../config/db.js";
 import { sendOtp } from "../utils/sendOtp.js";
 
@@ -124,9 +125,8 @@ export const resendOtp = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
+  if (!email || !password)
     return res.status(400).json({ message: "Missing fields" });
-  }
 
   try {
     const [rows] = await db.query(
@@ -134,28 +134,31 @@ export const login = async (req, res) => {
       [email]
     );
 
-    if (!rows.length) {
+    if (!rows.length)
       return res.status(404).json({ message: "User not found" });
-    }
 
     const user = rows[0];
 
-    if (!user.is_verified) {
-      return res.status(403).json({ message: "Please verify your email first" });
-    }
+    if (!user.is_verified)
+      return res.status(403).json({ message: "Verify email first" });
 
     const match = await bcrypt.compare(password, user.password);
-
-    if (!match) {
+    if (!match)
       return res.status(401).json({ message: "Invalid credentials" });
-    }
 
-    return res.json({
+    // ✅ CREATE JWT
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
       message: "Login successful",
-      userId: user.id,
+      token,
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Login failed" });
+    res.status(500).json({ message: "Login failed" });
   }
 };

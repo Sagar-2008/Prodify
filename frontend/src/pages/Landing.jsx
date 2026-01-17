@@ -1,33 +1,24 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Landing.css";
 
 export default function Landing() {
-  const handleSignup = () => {
-    // Navigate to signup page - update route as needed
-    window.location.href = '/signup';
-  };
-
-  const handleLogin = () => {
-    // Navigate to login page - update route as needed
-    window.location.href = '/login';
-  };
-
-  const handleWatchDemo = () => {
-    // Open demo video in modal or navigate to demo page
-    console.log('Opening demo video...');
-    // You can implement a modal here
-  };
-  
   const navigate = useNavigate();
+
+  // ✅ Auto-redirect logged-in users
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
+    const token = localStorage.getItem("token");
+    if (token) {
       navigate("/dashboard");
     }
   }, [navigate]);
 
+  const handleSignup = () => navigate("/signup");
+  const handleLogin = () => navigate("/login");
+
+  const handleWatchDemo = () => {
+    console.log("Opening demo video...");
+  };
 
   return (
     <div className="landing">
@@ -37,22 +28,32 @@ export default function Landing() {
           <a href="#features">Features</a>
           <a href="#how">How it Works</a>
           <a href="#testimonials">Reviews</a>
-          <button className="btn-secondary" onClick={handleLogin}>Login</button>
-          <button className="btn-primary" onClick={handleSignup}>Get Started</button>
+          <button className="btn-secondary" onClick={handleLogin}>
+            Login
+          </button>
+          <button className="btn-primary" onClick={handleSignup}>
+            Get Started
+          </button>
         </div>
       </nav>
 
       <section className="hero">
-        <div className="hero-badge">🎯 Trusted by 10,000+ students worldwide</div>
+        <div className="hero-badge">
+          🎯 Trusted by 10,000+ students worldwide
+        </div>
         <h1>Build habits. Master focus.</h1>
         <p className="hero-sub">
-          Prodify helps students build consistency, stay focused,
-          and visualize real academic progress — without burnout.
+          Prodify helps students build consistency, stay focused, and visualize
+          real academic progress — without burnout.
         </p>
 
         <div className="hero-actions">
-          <button className="btn-primary" onClick={handleSignup}>Create Free Account</button>
-          <button className="btn-secondary" onClick={handleWatchDemo}>Watch Demo</button>
+          <button className="btn-primary" onClick={handleSignup}>
+            Create Free Account
+          </button>
+          <button className="btn-secondary" onClick={handleWatchDemo}>
+            Watch Demo
+          </button>
         </div>
 
         <p className="hero-note">
@@ -82,8 +83,8 @@ export default function Landing() {
             <div className="card-icon">🎯</div>
             <h3>Habit Mastery System</h3>
             <p>
-              Go beyond streaks. Progress through mastery levels like
-              Rookie, Skilled, Expert, and Master as you build lasting habits.
+              Go beyond streaks. Progress through mastery levels like Rookie,
+              Skilled, Expert, and Master as you build lasting habits.
             </p>
           </div>
 
@@ -91,8 +92,8 @@ export default function Landing() {
             <div className="card-icon">⏱️</div>
             <h3>Deep Focus Sessions</h3>
             <p>
-              Built-in Pomodoro timer with focus logging, ambient music,
-              and real impact on your habit growth.
+              Built-in Pomodoro timer with focus logging, ambient music, and
+              real impact on your habit growth.
             </p>
           </div>
 
@@ -100,8 +101,8 @@ export default function Landing() {
             <div className="card-icon">📊</div>
             <h3>Visual Progress</h3>
             <p>
-              Weekly insights, streak heatmaps, and focus trends
-              that make your improvement crystal clear.
+              Weekly insights, streak heatmaps, and focus trends that make your
+              improvement crystal clear.
             </p>
           </div>
 
@@ -118,8 +119,8 @@ export default function Landing() {
             <div className="card-icon">🏆</div>
             <h3>Achievement System</h3>
             <p>
-              Unlock badges and milestones as you hit study goals,
-              keeping motivation high throughout the semester.
+              Unlock badges and milestones as you hit study goals, keeping
+              motivation high throughout the semester.
             </p>
           </div>
 
@@ -145,7 +146,8 @@ export default function Landing() {
             <span>01</span>
             <h4>Create habits & goals</h4>
             <p>
-              Define what you want to achieve and break it into manageable daily habits
+              Define what you want to achieve and break it into manageable daily
+              habits
             </p>
           </div>
 
@@ -153,7 +155,8 @@ export default function Landing() {
             <span>02</span>
             <h4>Focus using deep work mode</h4>
             <p>
-              Enter distraction-free sessions with timers, music, and progress tracking
+              Enter distraction-free sessions with timers, music, and progress
+              tracking
             </p>
           </div>
 
@@ -169,13 +172,12 @@ export default function Landing() {
 
       <section className="testimonials" id="testimonials">
         <h2>Loved by students everywhere</h2>
-
         <div className="testimonial-grid">
           <div className="testimonial">
             <div className="stars">⭐⭐⭐⭐⭐</div>
             <p>
-              "Prodify helped me maintain a 3.8 GPA while working part-time.
-              The habit system is a game-changer!"
+              "Prodify helped me maintain a 3.8 GPA while working part-time. The
+              habit system is a game-changer!"
             </p>
             <div className="author">
               <strong>Sarah Chen</strong>
@@ -186,8 +188,8 @@ export default function Landing() {
           <div className="testimonial">
             <div className="stars">⭐⭐⭐⭐⭐</div>
             <p>
-              "Finally, a productivity app that doesn't make me feel guilty.
-              The mastery levels keep me motivated."
+              "Finally, a productivity app that doesn't make me feel guilty. The
+              mastery levels keep me motivated."
             </p>
             <div className="author">
               <strong>Marcus Thompson</strong>
@@ -211,7 +213,6 @@ export default function Landing() {
 
       <section className="comparison">
         <h2>Why choose Prodify?</h2>
-
         <div className="comparison-table">
           <div className="comparison-row header">
             <div></div>
@@ -259,9 +260,7 @@ export default function Landing() {
 
       <section className="cta">
         <h2>Ready to take control of your productivity?</h2>
-        <p>
-          Start building habits that last — one focused session at a time.
-        </p>
+        <p>Start building habits that last — one focused session at a time.</p>
         <button className="btn-primary btn-large" onClick={handleSignup}>
           Start with Prodify — It's Free
         </button>
@@ -275,7 +274,8 @@ export default function Landing() {
           <div className="footer-section">
             <h3 className="logo">Prodify</h3>
             <p>
-              Empowering students to build better habits and achieve academic excellence.
+              Empowering students to build better habits and achieve academic
+              excellence.
             </p>
           </div>
 
