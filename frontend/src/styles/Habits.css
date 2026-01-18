@@ -1,0 +1,201 @@
+.habits-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.habits-header {
+  margin-bottom: 32px;
+}
+
+.habits-header h1 {
+  font-size: 2rem;
+  color: #a78bfa;
+  margin-bottom: 8px;
+}
+
+.habits-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.habit-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.habit-input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+}
+
+.habit-input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.habit-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.habit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+}
+
+.month-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(139, 92, 246, 0.08);
+  border-radius: 12px;
+}
+
+.month-navigation h2 {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.month-btn {
+  padding: 8px 16px;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.month-btn:hover {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: #a78bfa;
+}
+
+.habits-calendar {
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.calendar-header {
+  display: flex;
+  background: rgba(139, 92, 246, 0.15);
+  border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+  padding: 12px;
+  font-weight: 600;
+  color: #a78bfa;
+}
+
+.habit-name-header {
+  min-width: 200px;
+  padding-right: 16px;
+}
+
+.days-header {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.day-header {
+  min-width: 32px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.habit-row {
+  display: flex;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+  padding: 12px;
+  transition: background 0.2s ease;
+}
+
+.habit-row:hover {
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.habit-row:last-child {
+  border-bottom: none;
+}
+
+.habit-name {
+  min-width: 200px;
+  padding-right: 16px;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.habit-days {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.habit-day {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 6px;
+  background: rgba(139, 92, 246, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.habit-day:hover {
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.habit-day.completed {
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  border-color: #a78bfa;
+  color: white;
+}
+
+.habits-loading,
+.habits-empty {
+  text-align: center;
+  padding: 48px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .habit-form {
+    flex-direction: column;
+  }
+
+  .calendar-header,
+  .habit-row {
+    min-width: 600px;
+  }
+
+  .habit-name-header,
+  .habit-name {
+    min-width: 150px;
+  }
+}
