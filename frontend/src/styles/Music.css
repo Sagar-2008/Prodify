@@ -1,0 +1,213 @@
+.music-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.music-header {
+  margin-bottom: 32px;
+}
+
+.music-header h1 {
+  font-size: 2rem;
+  color: #a78bfa;
+  margin-bottom: 8px;
+}
+
+.music-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.music-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.music-url-input,
+.music-title-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 16px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+}
+
+.music-url-input:focus,
+.music-title-input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.music-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+}
+
+.music-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  min-height: 500px;
+}
+
+.music-sidebar {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.music-sidebar h3 {
+  color: #a78bfa;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.music-item {
+  padding: 14px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.music-item:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #a78bfa;
+}
+
+.music-item.active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(99, 102, 241, 0.3));
+  border-color: #a78bfa;
+}
+
+.music-item-title {
+  color: white;
+  font-weight: 500;
+  flex: 1;
+  word-break: break-word;
+}
+
+.music-delete-btn {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 4px;
+  color: #fca5a5;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+  padding: 0;
+}
+
+.music-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  border-color: #ef4444;
+  color: white;
+}
+
+.music-player {
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.music-player h2 {
+  color: #a78bfa;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.player-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.youtube-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.player-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ef4444;
+  text-align: center;
+}
+
+.music-note {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+.music-loading,
+.music-empty,
+.music-select-prompt {
+  text-align: center;
+  padding: 48px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 1024px) {
+  .music-container {
+    grid-template-columns: 1fr;
+  }
+
+  .music-sidebar {
+    max-height: 300px;
+  }
+}

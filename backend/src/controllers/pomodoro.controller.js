@@ -16,8 +16,8 @@ export const savePomodoroSession = async (req, res) => {
     const completedAt = new Date();
 
     await db.query(
-      `INSERT INTO pomodoro_sessions (user_id, task_name, duration, completed_at)
-       VALUES (?, ?, ?, ?)`,
+      `INSERT INTO pomodoro_sessions (user_id, task_name, session_type, duration_minutes, completed_at)
+       VALUES (?, ?, 'focus', ?, ?)`,
       [userId, taskName, duration, completedAt]
     );
 
@@ -44,7 +44,7 @@ export const getPomodoroSessions = async (req, res) => {
 
   try {
     const [sessions] = await db.query(
-      `SELECT id, task_name, duration, completed_at 
+      `SELECT id, task_name, session_type, duration_minutes, completed_at 
        FROM pomodoro_sessions 
        WHERE user_id = ? 
        ORDER BY completed_at DESC`,
@@ -72,8 +72,8 @@ export const getPomodoroStats = async (req, res) => {
     const [stats] = await db.query(
       `SELECT 
         COUNT(*) as total_sessions,
-        SUM(duration) as total_minutes,
-        AVG(duration) as avg_duration
+        SUM(duration_minutes) as total_minutes,
+        AVG(duration_minutes) as avg_duration
        FROM pomodoro_sessions 
        WHERE user_id = ?`,
       [userId]
