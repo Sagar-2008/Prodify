@@ -1,5 +1,4 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { usePomodoro } from "./PomodoroContext";
 
 export const MusicContext = createContext();
 
@@ -10,12 +9,24 @@ const PRESETS = {
     color: "from-purple-500 to-indigo-600",
     tracks: [
       {
-        title: "Deep Focus Flow",
-        url: "",
+        title: "Deep Calm",
+        url: "/src/assets/music/Deep Focus/Deep Calm.mp3",
       },
       {
-        title: "Concentration",
-        url: "https://cdn.pixabay.com/audio/2022/03/10/audio_d1718ab41b.mp3",
+        title: "Soft Focus",
+        url: "/src/assets/music/Deep Focus/Soft Focus.mp3",
+      },
+      {
+        title: "Electrical Grid",
+        url: "/src/assets/music/Deep Focus/Electrical Grid.mp3",
+      },
+      {
+        title: "Hypnotic Synth",
+        url: "/src/assets/music/Deep Focus/Hypnotic Synth.mp3",
+      },
+      {
+        title: "Rose",
+        url: "/src/assets/music/Deep Focus/Rose.mp3",
       },
     ],
   },
@@ -25,12 +36,24 @@ const PRESETS = {
     color: "from-pink-500 to-rose-600",
     tracks: [
       {
-        title: "Lo-fi Chill",
-        url: "https://cdn.pixabay.com/audio/2022/03/15/audio_4b6d0e2a1a.mp3",
+        title: "Calm Lofi",
+        url: "/src/assets/music/Lo-fi Beats/Calm Lofi.mp3",
       },
       {
         title: "Chill Vibes",
-        url: "/src/assets/music/Chill Vibes.mp3",
+        url: "/src/assets/music/Lo-fi Beats/Chill Vibes.mp3",
+      },
+      {
+        title: "Good Night",
+        url: "/src/assets/music/Lo-fi Beats/Good Night.mp3",
+      },
+      {
+        title: "Relax Summer",
+        url: "/src/assets/music/Lo-fi Beats/Relax Summer.mp3",
+      },
+      {
+        title: "Tactical Pause",
+        url: "/src/assets/music/Lo-fi Beats/Tactical Pause.mp3",
       },
     ],
   },
@@ -40,12 +63,24 @@ const PRESETS = {
     color: "from-blue-500 to-cyan-600",
     tracks: [
       {
-        title: "Cosmic Journey",
-        url: "https://cdn.pixabay.com/audio/2021/11/25/audio_91b3c3c2f3.mp3",
+        title: "Space Ambient",
+        url: "/src/assets/music/Ambient Space/Space Ambient.mp3",
       },
       {
-        title: "Ethereal Dreams",
-        url: "https://cdn.pixabay.com/audio/2022/05/13/audio_477548bf2a.mp3",
+        title: "Celestial Drift",
+        url: "/src/assets/music/Ambient Space/Celestial Drift.mp3",
+      },
+      {
+        title: "Nebula Ambient",
+        url: "/src/assets/music/Ambient Space/Nebula Ambient.mp3",
+      },
+      {
+        title: "Silent Universe",
+        url: "/src/assets/music/Ambient Space/Silent Universe.mp3",
+      },
+      {
+        title: "Ambient Guitar",
+        url: "/src/assets/music/Ambient Space/Ambient Guitar.mp3",
       },
     ],
   },
@@ -55,30 +90,51 @@ const PRESETS = {
     color: "from-amber-500 to-orange-600",
     tracks: [
       {
-        title: "Coffee Shop",
-        url: "https://cdn.pixabay.com/audio/2022/03/24/audio_c8a87b3f8c.mp3",
+        title: "Jazz Cafe",
+        url: "/src/assets/music/Cafe Ambience/Jazz Cafe.mp3",
+      },
+      {
+        title: "Soothing Cafe",
+        url: "/src/assets/music/Cafe Ambience/Soothing Cafe.mp3",
+      },
+      {
+        title: "Cafe Tokyo",
+        url: "/src/assets/music/Cafe Ambience/Cafe Tokyo.mp3",
+      },
+      {
+        title: "Chill Cafe Vol. 2",
+        url: "/src/assets/music/Cafe Ambience/Chill Cafe Vol. 2.mp3",
+      },
+      {
+        title: "Traditional Cafe Jazz",
+        url: "/src/assets/music/Cafe Ambience/Traditional Cafe Jazz.mp3",
       },
     ],
   },
   rain: {
-    name: "Light Rain",
+    name: "Rain",
     icon: "🌧️",
     color: "from-slate-500 to-gray-600",
     tracks: [
       {
         title: "Gentle Rain",
-        url: "https://cdn.pixabay.com/audio/2022/03/12/audio_b11c036db7.mp3",
+        url: "/src/assets/music/Rain/Gentle Rain.mp3",
       },
-    ],
-  },
-  storm: {
-    name: "Thunderstorm",
-    icon: "⛈️",
-    color: "from-zinc-600 to-slate-700",
-    tracks: [
       {
-        title: "Heavy Rain & Thunder",
-        url: "https://cdn.pixabay.com/audio/2021/08/04/audio_c91acf9fc5.mp3",
+        title: "Calm Rain Ambience",
+        url: "/src/assets/music/Rain/Calm Rain Ambience.mp3",
+      },
+      {
+        title: "Calming Rain",
+        url: "/src/assets/music/Rain/Calming Rain.mp3",
+      },
+      {
+        title: "Chilling In Rain",
+        url: "/src/assets/music/Rain/Chilling In Rain.mp3",
+      },
+      {
+        title: "Soft Rain On Window Glass",
+        url: "/src/assets/music/Rain/Soft Rain On Window Glass.mp3",
       },
     ],
   },
@@ -88,8 +144,24 @@ const PRESETS = {
     color: "from-red-500 to-orange-700",
     tracks: [
       {
-        title: "Crackling Fire",
-        url: "https://cdn.pixabay.com/audio/2022/03/10/audio_69f57a4b47.mp3",
+        title: "By the fireplace",
+        url: "/src/assets/music/Fireplace/By the fireplace.mp3",
+      },
+      {
+        title: "Evening Bonfire",
+        url: "/src/assets/music/Fireplace/Evening Bonfire.mp3",
+      },
+      {
+        title: "Bonfire Ambient",
+        url: "/src/assets/music/Fireplace/Bonfire Ambient.mp3",
+      },
+      {
+        title: "Cracking Fireplace With Piano",
+        url: "/src/assets/music/Fireplace/Cracking Fireplace With Piano.mp3",
+      },
+      {
+        title: "Relaxing Piano + Fireplace",
+        url: "/src/assets/music/Fireplace/Relaxing Piano + Fireplace.mp3",
       },
     ],
   },
@@ -99,8 +171,24 @@ const PRESETS = {
     color: "from-green-500 to-emerald-600",
     tracks: [
       {
-        title: "Forest Sounds",
-        url: "https://cdn.pixabay.com/audio/2022/03/09/audio_4838e90f61.mp3",
+        title: "Forest Ambience",
+        url: "/src/assets/music/Forest/Forest Ambience.mp3",
+      },
+      {
+        title: "Cricket in Forest",
+        url: "/src/assets/music/Forest/Cricket in Forest.mp3",
+      },
+      {
+        title: "Ambient Spring Forest",
+        url: "/src/assets/music/Forest/Ambient Spring Forest.mp3",
+      },
+      {
+        title: "Forest Daytime",
+        url: "/src/assets/music/Forest/Forest Daytime.mp3",
+      },
+      {
+        title: "Forest Wind With Crickets",
+        url: "/src/assets/music/Forest/Forest Wind With Crickets.mp3",
       },
     ],
   },
@@ -110,8 +198,24 @@ const PRESETS = {
     color: "from-teal-500 to-blue-600",
     tracks: [
       {
-        title: "Calm Waves",
-        url: "https://cdn.pixabay.com/audio/2022/06/07/audio_9614468b90.mp3",
+        title: "Relaxing Ocean Waves",
+        url: "/src/assets/music/Waves/Relaxing Ocean Waves.mp3",
+      },
+      {
+        title: "Soothing Ocean Waves",
+        url: "/src/assets/music/Waves/Soothing Ocean Waves.mp3",
+      },
+      {
+        title: "Beach Ocean Waves",
+        url: "/src/assets/music/Waves/Beach Ocean Waves.mp3",
+      },
+      {
+        title: "Water Ocean Waves",
+        url: "/src/assets/music/Waves/Water Ocean Waves.mp3",
+      },
+      {
+        title: "Gentle Water Stream",
+        url: "/src/assets/music/Waves/Gentle Water Stream.mp3",
       },
     ],
   },
@@ -119,75 +223,80 @@ const PRESETS = {
 
 export const MusicProvider = ({ children }) => {
   const audioRef = useRef(new Audio());
-  const { running, isSession } = usePomodoro();
 
   const [presetKey, setPresetKey] = useState("deep");
   const [trackIndex, setTrackIndex] = useState(0);
   const [volume, setVolume] = useState(0.6);
   const [muted, setMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isManuallyPlaying, setIsManuallyPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const preset = PRESETS[presetKey];
   const track = preset.tracks[trackIndex];
-  const pomodoroPlaying = running && isSession;
-  const playing = isManuallyPlaying || pomodoroPlaying;
+  const playing = isPlaying;
 
-  /* Load track */
+  /* Load track only when track or preset changes */
   useEffect(() => {
     const audio = audioRef.current;
 
     audio.src = track.url;
     audio.loop = true;
-    audio.volume = muted ? 0 : volume;
 
-    const handleCanPlay = () => setIsLoading(false);
+    const handleCanPlay = () => {
+      setIsLoading(false);
+      // Auto-play if isPlaying is true when track is ready
+      if (isPlaying) {
+        audio.play().catch((err) => console.error("Play error:", err));
+      }
+    };
     const handleError = () => {
       setIsLoading(false);
       console.error("Failed to load audio");
     };
 
     const handleLoadStart = () => setIsLoading(true);
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration);
 
     audio.addEventListener("loadstart", handleLoadStart);
     audio.addEventListener("canplay", handleCanPlay);
     audio.addEventListener("error", handleError);
-
-    if (playing) {
-      audio.play().catch((err) => console.error("Play error:", err));
-    }
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
 
     return () => {
       audio.removeEventListener("loadstart", handleLoadStart);
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("error", handleError);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
-  }, [trackIndex, presetKey, playing, muted, volume, track.url]);
+  }, [trackIndex, presetKey, isPlaying]);
 
-  /* Volume / mute */
+  /* Update volume without reloading audio */
   useEffect(() => {
     audioRef.current.volume = muted ? 0 : volume;
   }, [volume, muted]);
 
-  /* Pomodoro auto sync */
+  /* Handle play/pause */
   useEffect(() => {
     const audio = audioRef.current;
-    if (running && isSession && isManuallyPlaying) {
+    if (playing) {
       audio.play().catch((err) => console.error("Play error:", err));
-    } else if (!running || !isSession) {
-      if (!isManuallyPlaying) {
-        audio.pause();
-      }
+    } else {
+      audio.pause();
     }
-  }, [running, isSession, isManuallyPlaying]);
+  }, [playing]);
 
   const play = () => {
-    setIsManuallyPlaying(true);
+    setIsPlaying(true);
     audioRef.current.play().catch((err) => console.error("Play error:", err));
   };
 
   const pause = () => {
-    setIsManuallyPlaying(false);
+    setIsPlaying(false);
     audioRef.current.pause();
   };
 
@@ -209,6 +318,7 @@ export const MusicProvider = ({ children }) => {
         changePreset,
         track,
         trackIndex,
+        setTrackIndex,
         playing,
         play,
         pause,
@@ -219,6 +329,9 @@ export const MusicProvider = ({ children }) => {
         setMuted,
         isLoading,
         preset,
+        currentTime,
+        duration,
+        audioRef,
       }}
     >
       {children}

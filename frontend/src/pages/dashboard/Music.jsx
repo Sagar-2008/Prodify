@@ -85,6 +85,7 @@ export default function Music() {
     setPresetKey,
     track,
     trackIndex,
+    setTrackIndex,
     play,
     pause,
     next,
@@ -95,7 +96,16 @@ export default function Music() {
     isLoading,
     preset,
     playing,
+    currentTime,
+    duration,
+    audioRef,
   } = useMusic();
+
+  const handleSeek = (e) => {
+    if (audioRef && audioRef.current) {
+      audioRef.current.currentTime = Number(e.target.value);
+    }
+  };
 
   return (
     <div className="music-container-compact">
@@ -125,6 +135,25 @@ export default function Music() {
             </div>
           </div>
 
+          {/* Progress Slider */}
+          <div className="music-progress-container">
+            <input
+              type="range"
+              min="0"
+              max={duration || 0}
+              value={currentTime || 0}
+              onChange={handleSeek}
+              className="music-progress-slider"
+              aria-label="Song progress"
+            />
+            <div className="music-time-display">
+              <span className="music-current-time">
+                {Math.floor(currentTime)}s
+              </span>
+              <span className="music-duration">{Math.floor(duration)}s</span>
+            </div>
+          </div>
+
           {/* Loading Indicator */}
           {isLoading && (
             <div className="music-loading-compact">
@@ -145,10 +174,35 @@ export default function Music() {
               key={key}
               preset={p}
               isActive={presetKey === key}
-              onClick={() => setPresetKey(key)}
+              onClick={() => {
+                pause();
+                setPresetKey(key);
+                setTrackIndex(0);
+              }}
             />
           ))}
         </div>
+      </div>
+
+      {/* Track List */}
+      <div className="music-track-list">
+        <h3 className="music-track-list-title">Tracks</h3>
+        <ul className="music-track-items">
+          {preset?.tracks.map((t, idx) => (
+            <li
+              key={idx}
+              className={`music-track-item ${idx === trackIndex ? "active" : ""}`}
+              onClick={() => {
+                setTrackIndex(idx);
+                play();
+              }}
+            >
+              <span className="track-number">{idx + 1}</span>
+              <span className="track-title">{t.title}</span>
+              {idx === trackIndex && <span className="track-indicator">▶</span>}
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Track Info */}
