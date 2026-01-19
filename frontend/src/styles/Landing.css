@@ -171,7 +171,7 @@ section>* {
 }
 
 .card {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(99, 102, 241, 0.08));
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(167, 139, 250, 0.1));
     border: 1px solid rgba(139, 92, 246, 0.3);
     border-radius: 18px;
     padding: 32px;
@@ -195,7 +195,7 @@ section>* {
 
 .card:hover {
     transform: translateY(-12px) scale(1.02);
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.15));
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(167, 139, 250, 0.2));
     border-color: rgba(167, 139, 250, 0.6);
     box-shadow: 0 24px 48px rgba(124, 58, 237, 0.25);
 }
@@ -208,11 +208,15 @@ section>* {
     font-size: 2.2rem;
     margin-bottom: 16px;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
+    line-height: 1;
+    height: 48px;
+    display: flex;
+    align-items: center;
 }
 
 .card:hover .card-icon {
-    transform: scale(1.15) rotate(5deg);
+    transform: scale(1.1);
 }
 
 .card h3 {
