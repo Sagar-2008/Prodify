@@ -14,34 +14,37 @@ import Analytics from "./pages/dashboard/Analytics";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { PomodoroProvider } from "./context/PomodoroContext";
+import { MusicProvider } from "./context/MusicContext";
 
 export default function App() {
   return (
     <PomodoroProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/verify-otp" element={<VerifyOtp />} />
+      <MusicProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
 
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Overview />} />
-            <Route path="pomodoro" element={<Pomodoro />} />
-            <Route path="habits" element={<Habits />} />
-            <Route path="music" element={<Music />} />
-            <Route path="notes" element={<Notes />} />
-            <Route path="analytics" element={<Analytics />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Overview />} />
+              <Route path="pomodoro" element={<Pomodoro />} />
+              <Route path="habits" element={<Habits />} />
+              <Route path="music" element={<Music />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="analytics" element={<Analytics />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </MusicProvider>
     </PomodoroProvider>
   );
 }

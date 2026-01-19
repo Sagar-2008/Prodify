@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Typed from "typed.js";
+import { useMusic } from "../../hooks/useMusic";
 import "../../styles/Dashboard.css";
 
 const QUOTES = [
@@ -16,6 +17,7 @@ export default function DashboardLayout() {
   const location = useLocation();
   const quoteRef = useRef(null);
   const typedInstance = useRef(null);
+  const { playing, preset, track } = useMusic();
 
   const [habits, setHabits] = useState([
     { id: 1, text: "Drink water", done: true },
@@ -53,7 +55,7 @@ export default function DashboardLayout() {
 
   const toggleHabit = (id) => {
     setHabits((prev) =>
-      prev.map((h) => (h.id === id ? { ...h, done: !h.done } : h))
+      prev.map((h) => (h.id === id ? { ...h, done: !h.done } : h)),
     );
   };
 
@@ -120,7 +122,27 @@ export default function DashboardLayout() {
       <aside className="right-panel">
         <div className="card">
           <h4>Now Playing</h4>
-          <p>Nothing playing</p>
+          {playing ? (
+            <div className="now-playing-info">
+              <div style={{ fontSize: "24px", marginBottom: "8px" }}>
+                {preset?.icon}
+              </div>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: "13px" }}>
+                {track?.title}
+              </p>
+              <p
+                style={{
+                  margin: "4px 0 0 0",
+                  fontSize: "11px",
+                  opacity: 0.7,
+                }}
+              >
+                {preset?.name}
+              </p>
+            </div>
+          ) : (
+            <p>Nothing playing</p>
+          )}
         </div>
 
         <div className="card">
