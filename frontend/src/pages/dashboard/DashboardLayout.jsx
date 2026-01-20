@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Typed from "typed.js";
 import { useMusic } from "../../hooks/useMusic";
+import { getTodayHabits, toggleHabit } from "../../api/habits.api";
 import "../../styles/Dashboard.css";
 
 const QUOTES = [
@@ -19,10 +20,7 @@ export default function DashboardLayout() {
   const typedInstance = useRef(null);
   const { playing, preset, track } = useMusic();
 
-  const [habits, setHabits] = useState([
-    { id: 1, text: "Drink water", done: true },
-    { id: 2, text: "Read 10 pages", done: false },
-  ]);
+  const [todayHabits, setTodayHabits] = useState([]);
 
   /* AUTH CHECK */
   useEffect(() => {
@@ -38,14 +36,31 @@ export default function DashboardLayout() {
       });
   }, [navigate]);
 
+  /* LOAD TODAY HABITS */
+  useEffect(() => {
+    const load = async () => {
+      const res = await getTodayHabits();
+      setTodayHabits(res.data);
+    };
+
+    load();
+
+    // Listen for both events: from right panel and from calendar
+    window.addEventListener("habits-updated", load);
+    window.addEventListener("habit-toggled-from-calendar", load);
+
+    return () => {
+      window.removeEventListener("habits-updated", load);
+      window.removeEventListener("habit-toggled-from-calendar", load);
+    };
+  }, []);
+
   /* TYPED QUOTE */
   useEffect(() => {
     typedInstance.current = new Typed(quoteRef.current, {
       strings: QUOTES,
       typeSpeed: 40,
-      backSpeed: 0,
       backDelay: 2600,
-      startDelay: 500,
       loop: true,
       showCursor: true,
     });
@@ -53,10 +68,29 @@ export default function DashboardLayout() {
     return () => typedInstance.current.destroy();
   }, []);
 
-  const toggleHabit = (id) => {
-    setHabits((prev) =>
-      prev.map((h) => (h.id === id ? { ...h, done: !h.done } : h)),
-    );
+  const handleToggle = async (habitId, date) => {
+    try {
+      // Optimistic update
+      setTodayHabits((prev) =>
+        prev.map((h) =>
+          h.habit_id === habitId && h.log_date === date
+            ? { ...h, completed: h.completed ? 0 : 1 }
+            : h,
+        ),
+      );
+
+      await toggleHabit(habitId, date);
+      // Dispatch event so calendar syncs back
+      const event = new CustomEvent("habit-toggled-from-today", {
+        detail: { habitId, date },
+      });
+      window.dispatchEvent(event);
+    } catch (error) {
+      console.error("Failed to toggle habit:", error);
+      // Reload on error
+      const res = await getTodayHabits();
+      setTodayHabits(res.data);
+    }
   };
 
   const menu = [
@@ -69,10 +103,8 @@ export default function DashboardLayout() {
 
   return (
     <div className="dashboard">
-      {/* LEFT */}
       <aside className="sidebar">
         <h2 className="logo">Prodify</h2>
-
         <nav className="menu">
           {menu.map((m) => (
             <button
@@ -84,19 +116,8 @@ export default function DashboardLayout() {
             </button>
           ))}
         </nav>
-
-        <div className="motivation-card">
-          <div className="motivation-icon">🎯</div>
-          <h3 className="motivation-title">Today's Focus</h3>
-          <p className="motivation-text">Stay focused, one task at a time.</p>
-          <div className="progress-ring">
-            <div className="progress-fill" style={{ width: "65%" }} />
-          </div>
-          <p className="progress-text">65% Complete</p>
-        </div>
       </aside>
 
-      {/* CENTER */}
       <main className="main">
         <header className="topbar">
           <p className="quote">
@@ -118,28 +139,14 @@ export default function DashboardLayout() {
         </section>
       </main>
 
-      {/* RIGHT */}
       <aside className="right-panel">
         <div className="card">
           <h4>Now Playing</h4>
           {playing ? (
-            <div className="now-playing-info">
-              <div style={{ fontSize: "24px", marginBottom: "8px" }}>
-                {preset?.icon}
-              </div>
-              <p style={{ margin: 0, fontWeight: 600, fontSize: "13px" }}>
-                {track?.title}
-              </p>
-              <p
-                style={{
-                  margin: "4px 0 0 0",
-                  fontSize: "11px",
-                  opacity: 0.7,
-                }}
-              >
-                {preset?.name}
-              </p>
-            </div>
+            <>
+              <div style={{ fontSize: 24 }}>{preset?.icon}</div>
+              <p>{track?.title}</p>
+            </>
           ) : (
             <p>Nothing playing</p>
           )}
@@ -148,14 +155,14 @@ export default function DashboardLayout() {
         <div className="card">
           <h4>Today’s Habits</h4>
           <ul className="habit-list">
-            {habits.map((h) => (
-              <li key={h.id}>
+            {todayHabits.map((h) => (
+              <li key={h.habit_id}>
                 <label>
-                  <span>{h.text}</span>
+                  <span>{h.title}</span>
                   <input
                     type="checkbox"
-                    checked={h.done}
-                    onChange={() => toggleHabit(h.id)}
+                    checked={h.completed === 1}
+                    onChange={() => handleToggle(h.habit_id, h.log_date)}
                   />
                 </label>
               </li>
