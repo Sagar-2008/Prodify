@@ -21,7 +21,15 @@ export default function DashboardLayout() {
   const { playing, preset, track } = useMusic();
 
   const [todayHabits, setTodayHabits] = useState([]);
-  const [quickTasks, setQuickTasks] = useState([]);
+  const [quickTasks, setQuickTasks] = useState(() => {
+    try {
+      const saved = localStorage.getItem("quickTasks");
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to parse quick tasks:", e);
+      return [];
+    }
+  });
   const [newTaskInput, setNewTaskInput] = useState("");
 
   /* AUTH CHECK */
@@ -53,18 +61,6 @@ export default function DashboardLayout() {
     return () => {
       window.removeEventListener("habit-toggled-from-calendar", load);
     };
-  }, []);
-
-  /* LOAD QUICK TASKS FROM LOCALSTORAGE */
-  useEffect(() => {
-    const saved = localStorage.getItem("quickTasks");
-    if (saved) {
-      try {
-        setQuickTasks(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse quick tasks:", e);
-      }
-    }
   }, []);
 
   /* TYPED QUOTE */
@@ -133,6 +129,7 @@ export default function DashboardLayout() {
   };
 
   const menu = [
+    { label: "Overview", path: "/dashboard/" },
     { label: "Pomodoro", path: "/dashboard/pomodoro" },
     { label: "Habits", path: "/dashboard/habits" },
     { label: "Music", path: "/dashboard/music" },
