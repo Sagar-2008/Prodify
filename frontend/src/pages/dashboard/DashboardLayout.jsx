@@ -120,7 +120,7 @@ export default function DashboardLayout() {
 
   const handleToggleQuickTask = (taskId) => {
     const updated = quickTasks.map((t) =>
-      t.id === taskId ? { ...t, completed: !t.completed } : t
+      t.id === taskId ? { ...t, completed: !t.completed } : t,
     );
     setQuickTasks(updated);
     localStorage.setItem("quickTasks", JSON.stringify(updated));
@@ -243,10 +243,7 @@ export default function DashboardLayout() {
           </div>
           <ul className="quick-tasks-right">
             {quickTasks.map((task) => (
-              <li
-                key={task.id}
-                className={task.completed ? "completed" : ""}
-              >
+              <li key={task.id} className={task.completed ? "completed" : ""}>
                 <label>
                   <input
                     type="checkbox"
