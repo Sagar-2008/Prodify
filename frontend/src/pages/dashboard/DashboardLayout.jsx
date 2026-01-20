@@ -45,12 +45,10 @@ export default function DashboardLayout() {
 
     load();
 
-    // Listen for both events: from right panel and from calendar
-    window.addEventListener("habits-updated", load);
+    // Only listen to calendar toggle events
     window.addEventListener("habit-toggled-from-calendar", load);
 
     return () => {
-      window.removeEventListener("habits-updated", load);
       window.removeEventListener("habit-toggled-from-calendar", load);
     };
   }, []);

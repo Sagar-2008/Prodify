@@ -121,13 +121,15 @@ export const getHabitsByMonth = async (req, res) => {
     );
 
     const [logs] = await db.query(
-      `SELECT habit_id, log_date, completed
+      `SELECT habit_id, DATE_FORMAT(log_date, '%Y-%m-%d') as log_date, completed
        FROM habit_logs
        WHERE user_id = ?
        AND YEAR(log_date) = ?
        AND MONTH(log_date) = ?`,
       [userId, year, month]
     );
+
+    console.log("✅ Habits:", habits.length, "| Logs:", logs.length, logs);
 
     res.json({ habits, logs });
   } catch (err) {
@@ -150,16 +152,92 @@ export const getTodayHabits = async (req, res) => {
       FROM habits h
       LEFT JOIN habit_logs l
         ON h.id = l.habit_id
-       AND l.log_date = ?
+       AND DATE_FORMAT(l.log_date, '%Y-%m-%d') = ?
        AND l.user_id = ?
       WHERE h.user_id = ?
       `,
       [today, today, userId, userId]
     );
 
+    console.log("✅ Today's habits:", rows.length, rows);
     res.json(rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to fetch today habits" });
   }
 };
+
+/* GET habit analytics - streak and monthly data */
+export const getHabitAnalytics = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    // Get current streak
+    const today = new Date();
+    const [streakData] = await db.query(
+      `
+      WITH RECURSIVE date_series AS (
+        SELECT DATE_SUB(?, INTERVAL 0 DAY) as check_date
+        UNION ALL
+        SELECT DATE_SUB(check_date, INTERVAL 1 DAY)
+        FROM date_series
+        WHERE check_date > DATE_SUB(?, INTERVAL 365 DAY)
+      )
+      SELECT COUNT(*) as streak
+      FROM date_series ds
+      WHERE NOT EXISTS (
+        SELECT 1 FROM habit_logs hl
+        WHERE hl.user_id = ?
+        AND hl.log_date = ds.check_date
+        AND hl.completed = 0
+        AND EXISTS (
+          SELECT 1 FROM habits h
+          WHERE h.user_id = ? AND h.id = hl.habit_id
+        )
+      )
+      AND EXISTS (
+        SELECT 1 FROM habit_logs hl
+        WHERE hl.user_id = ?
+        AND hl.log_date = ds.check_date
+        AND hl.completed = 1
+      )
+      `,
+      [today, today, userId, userId, userId]
+    );
+
+    // Get total habits count
+    const [totalHabitsData] = await db.query(
+      `
+      SELECT COUNT(*) as total_habits
+      FROM habits
+      WHERE user_id = ?
+      `,
+      [userId]
+    );
+
+    // Get habits per day for current month
+    const [monthlyData] = await db.query(
+      `
+      SELECT DATE(log_date) as date, COUNT(*) as habits_completed
+      FROM habit_logs
+      WHERE user_id = ? 
+      AND YEAR(log_date) = YEAR(NOW())
+      AND MONTH(log_date) = MONTH(NOW())
+      AND completed = 1
+      GROUP BY DATE(log_date)
+      ORDER BY DATE(log_date)
+      `,
+      [userId]
+    );
+
+    res.json({
+      streak: streakData[0]?.streak || 0,
+      monthlyData: monthlyData || [],
+      totalHabits: totalHabitsData[0]?.total_habits || 0
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch analytics" });
+  }
+};
+

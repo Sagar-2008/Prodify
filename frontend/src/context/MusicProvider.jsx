@@ -1,6 +1,5 @@
-import { createContext, useEffect, useRef, useState } from "react";
-
-export const MusicContext = createContext();
+import { useEffect, useRef, useState } from "react";
+import { MusicContext } from "./MusicContext";
 
 const PRESETS = {
   deep: {
@@ -221,9 +220,9 @@ const PRESETS = {
   },
 };
 
-export const MusicProvider = ({ children }) => {
+const MusicProvider = ({ children }) => {
   const audioRef = useRef(null);
-  
+
   // Initialize audio once
   useEffect(() => {
     if (!audioRef.current) {
@@ -247,7 +246,7 @@ export const MusicProvider = ({ children }) => {
   /* Load track only when track or preset changes */
   useEffect(() => {
     if (!audioRef.current) return;
-    
+
     const audio = audioRef.current;
     const wasPlaying = !audio.paused;
 
@@ -283,7 +282,7 @@ export const MusicProvider = ({ children }) => {
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
-  }, [trackIndex, presetKey]);
+  }, [trackIndex, presetKey, track.url]);
 
   /* Update volume without reloading audio */
   useEffect(() => {
@@ -295,7 +294,7 @@ export const MusicProvider = ({ children }) => {
   /* Handle play/pause */
   useEffect(() => {
     if (!audioRef.current) return;
-    
+
     const audio = audioRef.current;
     if (playing) {
       audio.play().catch((err) => console.error("Play error:", err));
@@ -356,3 +355,5 @@ export const MusicProvider = ({ children }) => {
     </MusicContext.Provider>
   );
 };
+
+export { MusicProvider };
