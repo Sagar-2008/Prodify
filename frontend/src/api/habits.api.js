@@ -24,3 +24,10 @@ export const getHabitsByMonth = (year, month) =>
 
 export const getTodayHabits = () =>
   API.get("/habits/today");
+
+export const getHabitAnalytics = () =>
+  API.get("/habits/analytics");
+
+export const getPomodoroStats = () =>
+  API.get("/pomodoro/stats");
+

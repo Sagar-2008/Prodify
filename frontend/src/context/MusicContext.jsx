@@ -222,7 +222,14 @@ const PRESETS = {
 };
 
 export const MusicProvider = ({ children }) => {
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef(null);
+  
+  // Initialize audio once
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+  }, []);
 
   const [presetKey, setPresetKey] = useState("deep");
   const [trackIndex, setTrackIndex] = useState(0);
@@ -239,15 +246,18 @@ export const MusicProvider = ({ children }) => {
 
   /* Load track only when track or preset changes */
   useEffect(() => {
+    if (!audioRef.current) return;
+    
     const audio = audioRef.current;
+    const wasPlaying = !audio.paused;
 
     audio.src = track.url;
     audio.loop = true;
 
     const handleCanPlay = () => {
       setIsLoading(false);
-      // Auto-play if isPlaying is true when track is ready
-      if (isPlaying) {
+      // Auto-play if was playing before track change
+      if (wasPlaying) {
         audio.play().catch((err) => console.error("Play error:", err));
       }
     };
@@ -273,15 +283,19 @@ export const MusicProvider = ({ children }) => {
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
-  }, [trackIndex, presetKey, isPlaying]);
+  }, [trackIndex, presetKey]);
 
   /* Update volume without reloading audio */
   useEffect(() => {
-    audioRef.current.volume = muted ? 0 : volume;
+    if (audioRef.current) {
+      audioRef.current.volume = muted ? 0 : volume;
+    }
   }, [volume, muted]);
 
   /* Handle play/pause */
   useEffect(() => {
+    if (!audioRef.current) return;
+    
     const audio = audioRef.current;
     if (playing) {
       audio.play().catch((err) => console.error("Play error:", err));
@@ -292,12 +306,16 @@ export const MusicProvider = ({ children }) => {
 
   const play = () => {
     setIsPlaying(true);
-    audioRef.current.play().catch((err) => console.error("Play error:", err));
+    if (audioRef.current) {
+      audioRef.current.play().catch((err) => console.error("Play error:", err));
+    }
   };
 
   const pause = () => {
     setIsPlaying(false);
-    audioRef.current.pause();
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
   };
 
   const next = () => {

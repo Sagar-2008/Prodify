@@ -19,11 +19,35 @@ export default function Habits() {
 
   /* ---------- LOAD MONTH ---------- */
   useEffect(() => {
-    (async () => {
-      const res = await getHabitsByMonth(year, month);
-      setHabits(res.data.habits);
-      setLogs(res.data.logs);
-    })();
+    const loadData = async () => {
+      try {
+        const res = await getHabitsByMonth(year, month);
+        setHabits(res.data.habits || []);
+        setLogs(res.data.logs || []);
+      } catch (error) {
+        console.error("Failed to load habits:", error);
+      }
+    };
+    loadData();
+  }, [year, month]);
+
+  /* ---------- REFRESH DATA ON PAGE VISIBILITY ---------- */
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === "visible") {
+        try {
+          const res = await getHabitsByMonth(year, month);
+          setHabits(res.data.habits);
+          setLogs(res.data.logs || []);
+        } catch (error) {
+          console.error("Failed to refresh habits:", error);
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [year, month]);
 
   /* ---------- LISTEN TO UPDATES FROM TODAY'S HABITS ---------- */
@@ -61,10 +85,12 @@ export default function Habits() {
   /* ---------- HELPERS ---------- */
   const daysInMonth = new Date(year, month, 0).getDate();
 
-  const isChecked = (habitId, date) =>
-    logs.some(
+  const isChecked = (habitId, date) => {
+    const checked = logs.some(
       (l) => l.habit_id === habitId && l.log_date === date && l.completed === 1,
     );
+    return checked;
+  };
 
   /* ---------- ACTIONS ---------- */
   const handleAdd = async () => {

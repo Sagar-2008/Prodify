@@ -14,7 +14,7 @@ import Analytics from "./pages/dashboard/Analytics";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { PomodoroProvider } from "./context/PomodoroContext";
-import { MusicProvider } from "./context/MusicContext";
+import { MusicProvider } from "./context/MusicProvider";
 
 export default function App() {
   return (
