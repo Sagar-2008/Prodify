@@ -1,5 +1,5 @@
 import express from "express";
-import { authMiddleware } from "../middleware/auth.middleware.js";
+import { verifyToken } from "../middleware/auth.middleware.js";
 import {
   getSubjects,
   addSubject,
@@ -12,17 +12,17 @@ import {
 
 const router = express.Router();
 
-router.use(authMiddleware);
+router.use(verifyToken);
 
 // Subjects
 router.get("/subjects", getSubjects);
 router.post("/subjects", addSubject);
-router.delete("/subjects/:id", deleteSubject);
+router.delete("/subjects/:subjectId", deleteSubject);
 
 // Points
 router.get("/subjects/:subjectId/points", getSubjectPoints);
 router.post("/subjects/:subjectId/points", addPoint);
-router.put("/points/:pointId", updatePoint);
-router.delete("/points/:pointId", deletePoint);
+router.put("/subjects/:subjectId/points/:pointId", updatePoint);
+router.delete("/subjects/:subjectId/points/:pointId", deletePoint);
 
 export default router;

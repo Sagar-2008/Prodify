@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import pomodoroRoutes from "./routes/pomodoro.routes.js";
 import habitRoutes from "./routes/habit.routes.js";
+import notesRoutes from "./routes/notes.routes.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use("/habits", habitRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/pomodoro", pomodoroRoutes);
+app.use("/api/notes", notesRoutes);
 
 app.listen(5000, () => {
   console.log("Backend running on port 5000");
