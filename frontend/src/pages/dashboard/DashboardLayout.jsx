@@ -21,6 +21,8 @@ export default function DashboardLayout() {
   const { playing, preset, track } = useMusic();
 
   const [todayHabits, setTodayHabits] = useState([]);
+  const [quickTasks, setQuickTasks] = useState([]);
+  const [newTaskInput, setNewTaskInput] = useState("");
 
   /* AUTH CHECK */
   useEffect(() => {
@@ -51,6 +53,18 @@ export default function DashboardLayout() {
     return () => {
       window.removeEventListener("habit-toggled-from-calendar", load);
     };
+  }, []);
+
+  /* LOAD QUICK TASKS FROM LOCALSTORAGE */
+  useEffect(() => {
+    const saved = localStorage.getItem("quickTasks");
+    if (saved) {
+      try {
+        setQuickTasks(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse quick tasks:", e);
+      }
+    }
   }, []);
 
   /* TYPED QUOTE */
@@ -89,6 +103,33 @@ export default function DashboardLayout() {
       const res = await getTodayHabits();
       setTodayHabits(res.data);
     }
+  };
+
+  const handleAddQuickTask = () => {
+    if (!newTaskInput.trim()) return;
+    const newTask = {
+      id: Date.now(),
+      text: newTaskInput,
+      completed: false,
+    };
+    const updated = [...quickTasks, newTask];
+    setQuickTasks(updated);
+    localStorage.setItem("quickTasks", JSON.stringify(updated));
+    setNewTaskInput("");
+  };
+
+  const handleToggleQuickTask = (taskId) => {
+    const updated = quickTasks.map((t) =>
+      t.id === taskId ? { ...t, completed: !t.completed } : t
+    );
+    setQuickTasks(updated);
+    localStorage.setItem("quickTasks", JSON.stringify(updated));
+  };
+
+  const handleDeleteQuickTask = (taskId) => {
+    const updated = quickTasks.filter((t) => t.id !== taskId);
+    setQuickTasks(updated);
+    localStorage.setItem("quickTasks", JSON.stringify(updated));
   };
 
   const menu = [
@@ -171,11 +212,57 @@ export default function DashboardLayout() {
         <div className="card">
           <div className="quick-header-right">
             <h4>Quick Tasks</h4>
-            <button className="add-btn-right">＋</button>
+            <button
+              className="add-btn-right"
+              onClick={() => {
+                const input = document.getElementById("quick-task-input");
+                if (input) input.focus();
+              }}
+            >
+              ＋
+            </button>
+          </div>
+          <div className="quick-task-input-wrapper">
+            <input
+              id="quick-task-input"
+              type="text"
+              placeholder="Add a quick task..."
+              value={newTaskInput}
+              onChange={(e) => setNewTaskInput(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleAddQuickTask()}
+              className="quick-task-input"
+            />
+            {newTaskInput.trim() && (
+              <button
+                className="quick-task-add-btn"
+                onClick={handleAddQuickTask}
+              >
+                Add
+              </button>
+            )}
           </div>
           <ul className="quick-tasks-right">
-            <li>Finish notes</li>
-            <li>Study 30 mins</li>
+            {quickTasks.map((task) => (
+              <li
+                key={task.id}
+                className={task.completed ? "completed" : ""}
+              >
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => handleToggleQuickTask(task.id)}
+                  />
+                  <span>{task.text}</span>
+                </label>
+                <button
+                  className="delete-task-btn"
+                  onClick={() => handleDeleteQuickTask(task.id)}
+                >
+                  ✕
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </aside>
