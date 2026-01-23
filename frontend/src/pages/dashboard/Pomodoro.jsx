@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../../styles/Pomodoro.css";
 import { usePomodoro } from "../../context/PomodoroContext";
 
@@ -21,26 +21,25 @@ export default function Pomodoro() {
   const [editingTask, setEditingTask] = useState(false);
   const [tempTaskName, setTempTaskName] = useState(taskName);
   const [showSettings, setShowSettings] = useState(false);
+  const isInitialMount = useRef(true);
 
-  // Load session and break durations from localStorage
+  // Load session and break durations from localStorage on mount only
   useEffect(() => {
-    const savedSessionDuration = localStorage.getItem("sessionDuration");
-    const savedBreakDuration = localStorage.getItem("breakDuration");
-    if (savedSessionDuration) {
-      const duration = parseInt(savedSessionDuration);
-      setSessionDuration(duration);
-      if (isSession && !running) {
+    if (isInitialMount.current) {
+      const savedSessionDuration = localStorage.getItem("sessionDuration");
+      const savedBreakDuration = localStorage.getItem("breakDuration");
+      if (savedSessionDuration) {
+        const duration = parseInt(savedSessionDuration);
+        setSessionDuration(duration);
         setTimeLeft(duration * 60);
       }
-    }
-    if (savedBreakDuration) {
-      const duration = parseInt(savedBreakDuration);
-      setBreakDuration(duration);
-      if (!isSession && !running) {
-        setTimeLeft(duration * 60);
+      if (savedBreakDuration) {
+        const duration = parseInt(savedBreakDuration);
+        setBreakDuration(duration);
       }
+      isInitialMount.current = false;
     }
-  }, [setSessionDuration, setBreakDuration, isSession, running, setTimeLeft]);
+  }, []);
 
   const formatTime = (s) => {
     const m = Math.floor(s / 60)
@@ -80,12 +79,18 @@ export default function Pomodoro() {
     const val = parseInt(e.target.value) || 1;
     setSessionDuration(val);
     localStorage.setItem("sessionDuration", val);
+    if (!running && isSession) {
+      setTimeLeft(val * 60);
+    }
   };
 
   const handleBreakDurationChange = (e) => {
     const val = parseInt(e.target.value) || 1;
     setBreakDuration(val);
     localStorage.setItem("breakDuration", val);
+    if (!running && !isSession) {
+      setTimeLeft(val * 60);
+    }
   };
 
   return (
