@@ -29,6 +29,18 @@ export default function Pomodoro() {
     }
   }, [isSession, sessionDuration, breakDuration, running, setTimeLeft]);
 
+  // Load session and break durations from localStorage
+  useEffect(() => {
+    const savedSessionDuration = localStorage.getItem("sessionDuration");
+    const savedBreakDuration = localStorage.getItem("breakDuration");
+    if (savedSessionDuration) {
+      setSessionDuration(parseInt(savedSessionDuration));
+    }
+    if (savedBreakDuration) {
+      setBreakDuration(parseInt(savedBreakDuration));
+    }
+  }, [setSessionDuration, setBreakDuration]);
+
   const formatTime = (s) => {
     const m = Math.floor(s / 60)
       .toString()
@@ -57,11 +69,13 @@ export default function Pomodoro() {
   const handleSessionDurationChange = (e) => {
     const val = parseInt(e.target.value) || 1;
     setSessionDuration(val);
+    localStorage.setItem("sessionDuration", val);
   };
 
   const handleBreakDurationChange = (e) => {
     const val = parseInt(e.target.value) || 1;
     setBreakDuration(val);
+    localStorage.setItem("breakDuration", val);
   };
 
   return (
