@@ -27,12 +27,20 @@ export default function Pomodoro() {
     const savedSessionDuration = localStorage.getItem("sessionDuration");
     const savedBreakDuration = localStorage.getItem("breakDuration");
     if (savedSessionDuration) {
-      setSessionDuration(parseInt(savedSessionDuration));
+      const duration = parseInt(savedSessionDuration);
+      setSessionDuration(duration);
+      if (isSession && !running) {
+        setTimeLeft(duration * 60);
+      }
     }
     if (savedBreakDuration) {
-      setBreakDuration(parseInt(savedBreakDuration));
+      const duration = parseInt(savedBreakDuration);
+      setBreakDuration(duration);
+      if (!isSession && !running) {
+        setTimeLeft(duration * 60);
+      }
     }
-  }, [setSessionDuration, setBreakDuration]);
+  }, [setSessionDuration, setBreakDuration, isSession, running, setTimeLeft]);
 
   const formatTime = (s) => {
     const m = Math.floor(s / 60)
