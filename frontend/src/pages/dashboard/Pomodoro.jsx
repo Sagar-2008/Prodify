@@ -22,13 +22,6 @@ export default function Pomodoro() {
   const [tempTaskName, setTempTaskName] = useState(taskName);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Update timeLeft when isSession changes (for reset/switch)
-  useEffect(() => {
-    if (!running) {
-      setTimeLeft((isSession ? sessionDuration : breakDuration) * 60);
-    }
-  }, [isSession, sessionDuration, breakDuration, running, setTimeLeft]);
-
   // Load session and break durations from localStorage
   useEffect(() => {
     const savedSessionDuration = localStorage.getItem("sessionDuration");
@@ -49,14 +42,23 @@ export default function Pomodoro() {
     return `${m}:${sec}`;
   };
 
+  const getButtonText = () => {
+    if (running) return "Pause";
+    const fullDuration = (isSession ? sessionDuration : breakDuration) * 60;
+    return timeLeft === fullDuration ? "Start" : "Resume";
+  };
+
   const handleReset = () => {
     setRunning(false);
     setIsSession(true);
+    setTimeLeft(sessionDuration * 60);
   };
 
   const handleSwitchMode = () => {
     setRunning(false);
-    setIsSession(!isSession);
+    const newIsSession = !isSession;
+    setIsSession(newIsSession);
+    setTimeLeft((newIsSession ? sessionDuration : breakDuration) * 60);
   };
 
   const handleSaveTask = () => {
@@ -158,12 +160,7 @@ export default function Pomodoro() {
       </div>
 
       <div className="pomodoro-controls">
-        <button onClick={() => setRunning(true)} disabled={running}>
-          Start
-        </button>
-        <button onClick={() => setRunning(false)} disabled={!running}>
-          Pause
-        </button>
+        <button onClick={() => setRunning(!running)}>{getButtonText()}</button>
         <button onClick={handleReset}>Reset</button>
         <button onClick={handleSwitchMode} disabled={running}>
           {isSession ? "Break" : "Focus"}
