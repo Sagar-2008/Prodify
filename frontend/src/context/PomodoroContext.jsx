@@ -11,6 +11,7 @@ export const PomodoroProvider = ({ children }) => {
   const [isSession, setIsSession] = useState(true);
   const [taskName, setTaskName] = useState("Focus Session");
   const audioContextRef = useRef(null);
+  const timerStartTimeRef = useRef(null);
 
   const playAlertSound = (frequency = 800, duration = 500) => {
     try {
@@ -33,7 +34,7 @@ export const PomodoroProvider = ({ children }) => {
       gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(
         0.01,
-        audioContext.currentTime + duration / 1000
+        audioContext.currentTime + duration / 1000,
       );
 
       oscillator.start(audioContext.currentTime);
@@ -52,7 +53,7 @@ export const PomodoroProvider = ({ children }) => {
         gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
         gain2.gain.exponentialRampToValueAtTime(
           0.01,
-          audioContext.currentTime + duration / 1000
+          audioContext.currentTime + duration / 1000,
         );
 
         osc2.start(audioContext.currentTime);
@@ -65,44 +66,58 @@ export const PomodoroProvider = ({ children }) => {
 
   // Timer interval that runs regardless of which page is active
   useEffect(() => {
-    if (!running) return;
+    if (!running) {
+      timerStartTimeRef.current = null;
+      return;
+    }
 
     let hasSessionEnded = false;
 
+    // Store the timestamp when timer starts or resumes
+    if (timerStartTimeRef.current === null) {
+      timerStartTimeRef.current = Date.now();
+    }
+
     const interval = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1 && !hasSessionEnded) {
-          hasSessionEnded = true;
-          playAlertSound(isSession ? 1000 : 600, 600);
+      const elapsedSeconds = Math.floor(
+        (Date.now() - timerStartTimeRef.current) / 1000,
+      );
+      const initialTimeLeft =
+        (isSession ? sessionDuration : breakDuration) * 60;
+      const newTimeLeft = Math.max(0, initialTimeLeft - elapsedSeconds);
 
-          // ✅ SAVE ONLY FOCUS SESSION - using current state values
-          if (isSession) {
-            axios
-              .post(
-                "http://localhost:5000/pomodoro/session",
-                {
-                  taskName,
-                  duration: sessionDuration,
+      setTimeLeft(newTimeLeft);
+
+      if (newTimeLeft <= 0 && !hasSessionEnded) {
+        hasSessionEnded = true;
+        timerStartTimeRef.current = null;
+        playAlertSound(isSession ? 1000 : 600, 600);
+
+        // ✅ SAVE ONLY FOCUS SESSION - using current state values
+        if (isSession) {
+          axios
+            .post(
+              "http://localhost:5000/pomodoro/session",
+              {
+                taskName,
+                duration: sessionDuration,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
-                {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  },
-                }
-              )
-              .catch(console.error);
-          }
-
-          const newIsSession = !isSession;
-          setIsSession(newIsSession);
-          const newTime = (newIsSession ? sessionDuration : breakDuration) * 60;
-          setTimeLeft(newTime);
-          setRunning(false);
-          return newTime;
+              },
+            )
+            .catch(console.error);
         }
-        return t - 1;
-      });
-    }, 1000);
+
+        const newIsSession = !isSession;
+        setIsSession(newIsSession);
+        const newTime = (newIsSession ? sessionDuration : breakDuration) * 60;
+        setTimeLeft(newTime);
+        setRunning(false);
+      }
+    }, 100); // Check more frequently for accuracy
 
     return () => clearInterval(interval);
   }, [running, isSession, sessionDuration, breakDuration, taskName]);

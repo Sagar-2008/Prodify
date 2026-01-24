@@ -222,6 +222,7 @@ const PRESETS = {
 
 const MusicProvider = ({ children }) => {
   const audioRef = useRef(null);
+  const wasPlayingRef = useRef(false);
 
   // Initialize audio once
   useEffect(() => {
@@ -248,15 +249,14 @@ const MusicProvider = ({ children }) => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
-    const wasPlaying = !audio.paused;
 
     audio.src = track.url;
-    audio.loop = true;
+    audio.loop = false;
 
     const handleCanPlay = () => {
       setIsLoading(false);
       // Auto-play if was playing before track change
-      if (wasPlaying) {
+      if (wasPlayingRef.current) {
         audio.play().catch((err) => console.error("Play error:", err));
       }
     };
@@ -268,12 +268,17 @@ const MusicProvider = ({ children }) => {
     const handleLoadStart = () => setIsLoading(true);
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration);
+    const handleEnded = () => {
+      wasPlayingRef.current = true;
+      setTrackIndex((i) => (i + 1) % preset.tracks.length);
+    };
 
     audio.addEventListener("loadstart", handleLoadStart);
     audio.addEventListener("canplay", handleCanPlay);
     audio.addEventListener("error", handleError);
     audio.addEventListener("timeupdate", handleTimeUpdate);
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
       audio.removeEventListener("loadstart", handleLoadStart);
@@ -281,8 +286,9 @@ const MusicProvider = ({ children }) => {
       audio.removeEventListener("error", handleError);
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, [trackIndex, presetKey, track.url]);
+  }, [trackIndex, presetKey, track.url, preset]);
 
   /* Update volume without reloading audio */
   useEffect(() => {
@@ -297,8 +303,10 @@ const MusicProvider = ({ children }) => {
 
     const audio = audioRef.current;
     if (playing) {
+      wasPlayingRef.current = true;
       audio.play().catch((err) => console.error("Play error:", err));
     } else {
+      wasPlayingRef.current = false;
       audio.pause();
     }
   }, [playing]);
