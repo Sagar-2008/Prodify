@@ -133,8 +133,8 @@ export default function DashboardLayout() {
     { label: "Pomodoro", path: "/dashboard/pomodoro" },
     { label: "Habits", path: "/dashboard/habits" },
     { label: "Music", path: "/dashboard/music" },
-    { label: "Notes", path: "/dashboard/notes" },
     { label: "Analytics", path: "/dashboard/analytics" },
+    { label: "Journal", path: "/dashboard/journal" },
   ];
 
   return (

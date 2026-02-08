@@ -9,8 +9,8 @@ import Overview from "./pages/dashboard/Overview";
 import Pomodoro from "./pages/dashboard/Pomodoro";
 import Habits from "./pages/dashboard/Habits";
 import Music from "./pages/dashboard/Music";
-import Notes from "./pages/dashboard/Notes";
 import Analytics from "./pages/dashboard/Analytics";
+import Journal from "./pages/dashboard/Journal";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { PomodoroProvider } from "./context/PomodoroContext";
@@ -39,8 +39,8 @@ export default function App() {
               <Route path="pomodoro" element={<Pomodoro />} />
               <Route path="habits" element={<Habits />} />
               <Route path="music" element={<Music />} />
-              <Route path="notes" element={<Notes />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="journal" element={<Journal />} />
             </Route>
           </Routes>
         </BrowserRouter>
