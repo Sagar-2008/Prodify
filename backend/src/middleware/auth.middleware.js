@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
+  // Allow preflight requests through without auth
+  if (req.method === "OPTIONS") return next();
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {

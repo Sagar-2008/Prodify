@@ -6,6 +6,7 @@ import "../styles/Auth.css";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -18,9 +19,10 @@ export default function Signup() {
         password,
       });
       localStorage.setItem("email", email); // IMPORTANT
+      setError("");
       navigate("/verify-otp");
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      setError(err.response?.data?.message || "Signup failed");
     }
   };
 
@@ -53,6 +55,7 @@ export default function Signup() {
             Create Account
           </button>
         </form>
+        {error && <p className="auth-error">{error}</p>}
 
         <p className="auth-footer">
           Already have an account? <a href="/login">Login</a>
