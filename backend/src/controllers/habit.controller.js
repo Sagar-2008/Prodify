@@ -51,10 +51,14 @@ export const deleteHabit = async (req, res) => {
       [habitId, userId]
     );
 
-    await db.query(
+    const [result] = await db.query(
       "DELETE FROM habits WHERE id = ? AND user_id = ?",
       [habitId, userId]
     );
+
+    if (!result.affectedRows) {
+      return res.status(404).json({ message: "Habit not found" });
+    }
 
     res.json({ message: "Habit deleted" });
   } catch (err) {
@@ -73,6 +77,14 @@ export const toggleHabit = async (req, res) => {
     new Date().toISOString().slice(0, 10);
 
   try {
+    const [habits] = await db.query(
+      "SELECT id FROM habits WHERE id = ? AND user_id = ?",
+      [habitId, userId]
+    );
+    if (!habits.length) {
+      return res.status(404).json({ message: "Habit not found" });
+    }
+
     const [rows] = await db.query(
       `
       SELECT id, completed

@@ -1,17 +1,32 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { normalizeTimerDuration, readTimerDuration } from "../config/focusSettings";
 
 const PomodoroContext = createContext();
 
 export const PomodoroProvider = ({ children }) => {
-  const [sessionDuration, setSessionDuration] = useState(25);
-  const [breakDuration, setBreakDuration] = useState(5);
+  const [sessionDuration, setSessionDuration] = useState(() => readTimerDuration(localStorage.getItem("sessionDuration"), 25, 60));
+  const [breakDuration, setBreakDuration] = useState(() => readTimerDuration(localStorage.getItem("breakDuration"), 5, 30));
   const [timeLeft, setTimeLeft] = useState(sessionDuration * 60);
   const [running, setRunning] = useState(false);
   const [isSession, setIsSession] = useState(true);
   const [taskName, setTaskName] = useState("Focus Session");
   const audioContextRef = useRef(null);
   const timerStartTimeRef = useRef(null);
+
+  const updateSessionDuration = (value) => {
+    const duration = normalizeTimerDuration(value, 60);
+    setSessionDuration(duration);
+    localStorage.setItem("sessionDuration", String(duration));
+    if (!running && isSession) setTimeLeft(duration * 60);
+  };
+
+  const updateBreakDuration = (value) => {
+    const duration = normalizeTimerDuration(value, 30);
+    setBreakDuration(duration);
+    localStorage.setItem("breakDuration", String(duration));
+    if (!running && !isSession) setTimeLeft(duration * 60);
+  };
 
   const playAlertSound = (frequency = 800, duration = 500) => {
     try {
@@ -108,6 +123,7 @@ export const PomodoroProvider = ({ children }) => {
                 },
               },
             )
+            .then(() => window.dispatchEvent(new Event("productivity-data-updated")))
             .catch(console.error);
         }
 
@@ -127,6 +143,8 @@ export const PomodoroProvider = ({ children }) => {
     setSessionDuration,
     breakDuration,
     setBreakDuration,
+    updateSessionDuration,
+    updateBreakDuration,
     timeLeft,
     setTimeLeft,
     running,

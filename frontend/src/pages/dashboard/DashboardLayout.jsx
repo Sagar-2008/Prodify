@@ -1,265 +1,122 @@
-import { useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { createElement } from "react";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Typed from "typed.js";
+import {
+  AudioLines, BarChart3, BookOpenText, CheckSquare2, ChevronRight, Settings2,
+  Compass, LayoutDashboard, LogOut, Menu, Swords, Timer, X,
+} from "lucide-react";
 import { useMusic } from "../../hooks/useMusic";
-import { getTodayHabits, toggleHabit } from "../../api/habits.api";
+import { useProductivity } from "../../context/ProductivityContext";
 import "../../styles/Dashboard.css";
 
-const QUOTES = [
-  "Small steps every day lead to big wins.",
-  "Discipline beats motivation.",
-  "Focus on progress, not perfection.",
-  "Consistency creates confidence.",
+const navGroups = [
+  { label: "COMMAND", items: [{ label: "Overview", path: "/dashboard", icon: LayoutDashboard }] },
+  { label: "GROW", items: [
+    { label: "Quest board", path: "/dashboard/quests", icon: Swords },
+    { label: "Goals & projects", path: "/dashboard/goals", icon: Compass },
+    { label: "Habits", path: "/dashboard/habits", icon: CheckSquare2 },
+    { label: "Training log", path: "/dashboard/dojo", icon: BookOpenText },
+  ] },
+  { label: "FOCUS", items: [
+    { label: "Time chamber", path: "/dashboard/pomodoro", icon: Timer },
+    { label: "Soundscape", path: "/dashboard/music", icon: AudioLines },
+  ] },
+  { label: "REFLECT", items: [
+    { label: "Analytics", path: "/dashboard/analytics", icon: BarChart3 },
+    { label: "Journal", path: "/dashboard/journal", icon: BookOpenText },
+    { label: "Personalize", path: "/dashboard/settings", icon: Settings2 },
+  ] },
 ];
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const quoteRef = useRef(null);
-  const typedInstance = useRef(null);
   const { playing, preset, track } = useMusic();
+  const { xp, rank, quests, power, profile, posterUrl, syncStatus, syncError, syncNow } = useProductivity();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
-  const [todayHabits, setTodayHabits] = useState([]);
-  const [quickTasks, setQuickTasks] = useState(() => {
-    try {
-      const saved = localStorage.getItem("quickTasks");
-      return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      console.error("Failed to parse quick tasks:", e);
-      return [];
-    }
-  });
-  const [newTaskInput, setNewTaskInput] = useState("");
-
-  /* AUTH CHECK */
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .catch(() => {
-        localStorage.clear();
-        navigate("/login");
-      });
+    axios.get("http://localhost:5000/user/me", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }).catch(() => {
+      localStorage.removeItem("token");
+      navigate("/login");
+    });
   }, [navigate]);
 
-  /* LOAD TODAY HABITS */
   useEffect(() => {
-    const load = async () => {
-      const res = await getTodayHabits();
-      setTodayHabits(res.data);
-    };
-
-    load();
-
-    // Only listen to calendar toggle events
-    window.addEventListener("habit-toggled-from-calendar", load);
-
-    return () => {
-      window.removeEventListener("habit-toggled-from-calendar", load);
-    };
+    const interval = window.setInterval(() => setQuoteIndex((index) => (index + 1) % 4), 9000);
+    return () => window.clearInterval(interval);
   }, []);
 
-  /* TYPED QUOTE */
-  useEffect(() => {
-    typedInstance.current = new Typed(quoteRef.current, {
-      strings: QUOTES,
-      typeSpeed: 40,
-      backDelay: 2600,
-      loop: true,
-      showCursor: true,
-    });
-
-    return () => typedInstance.current.destroy();
-  }, []);
-
-  const handleToggle = async (habitId, date) => {
-    try {
-      // Optimistic update
-      setTodayHabits((prev) =>
-        prev.map((h) =>
-          h.habit_id === habitId && h.log_date === date
-            ? { ...h, completed: h.completed ? 0 : 1 }
-            : h,
-        ),
-      );
-
-      await toggleHabit(habitId, date);
-      // Dispatch event so calendar syncs back
-      const event = new CustomEvent("habit-toggled-from-today", {
-        detail: { habitId, date },
-      });
-      window.dispatchEvent(event);
-    } catch (error) {
-      console.error("Failed to toggle habit:", error);
-      // Reload on error
-      const res = await getTodayHabits();
-      setTodayHabits(res.data);
-    }
-  };
-
-  const handleAddQuickTask = () => {
-    if (!newTaskInput.trim()) return;
-    const newTask = {
-      id: Date.now(),
-      text: newTaskInput,
-      completed: false,
-    };
-    const updated = [...quickTasks, newTask];
-    setQuickTasks(updated);
-    localStorage.setItem("quickTasks", JSON.stringify(updated));
-    setNewTaskInput("");
-  };
-
-  const handleToggleQuickTask = (taskId) => {
-    const updated = quickTasks.map((t) =>
-      t.id === taskId ? { ...t, completed: !t.completed } : t,
-    );
-    setQuickTasks(updated);
-    localStorage.setItem("quickTasks", JSON.stringify(updated));
-  };
-
-  const handleDeleteQuickTask = (taskId) => {
-    const updated = quickTasks.filter((t) => t.id !== taskId);
-    setQuickTasks(updated);
-    localStorage.setItem("quickTasks", JSON.stringify(updated));
-  };
-
-  const menu = [
-    { label: "Overview", path: "/dashboard/" },
-    { label: "Pomodoro", path: "/dashboard/pomodoro" },
-    { label: "Habits", path: "/dashboard/habits" },
-    { label: "Music", path: "/dashboard/music" },
-    { label: "Analytics", path: "/dashboard/analytics" },
-    { label: "Journal", path: "/dashboard/journal" },
+  const quotes = [
+    "Small steps, repeated, become a different life.",
+    "Focus on the next useful action.",
+    "You do not need a perfect day to make progress.",
+    "Consistency is built one decision at a time.",
   ];
+  const currentItem = navGroups.flatMap((group) => group.items).find((item) =>
+    item.path === "/dashboard" ? location.pathname === item.path : location.pathname.startsWith(item.path),
+  );
+  const rankProgress = power?.rankProgress ?? (rank.next ? Math.min(100, Math.round(((xp - rank.floor) / (rank.next - rank.floor)) * 100)) : 100);
+  const dateLabel = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   return (
-    <div className="dashboard">
-      <aside className="sidebar">
-        <h2 className="logo">Prodify</h2>
-        <nav className="menu">
-          {menu.map((m) => (
-            <button
-              key={m.path}
-              className={location.pathname === m.path ? "active" : ""}
-              onClick={() => navigate(m.path)}
-            >
-              {m.label}
-            </button>
+    <div className="zen-dashboard" data-theme={profile.theme || "capsule"}>
+      {sidebarOpen && <button className="sidebar-scrim" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
+      <aside className={`dashboard-sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
+        <button className="brand-lockup" onClick={() => navigate("/dashboard")} aria-label="ZENKAI OS home">
+          <span className="brand-mark"><span /></span>
+          <span><strong>ZENKAI</strong><small>PERSONAL OS</small></span>
+        </button>
+        <div className="sidebar-label">YOUR SYSTEM</div>
+        <nav className="dashboard-nav">
+          {navGroups.map((group) => (
+            <div className="nav-group" key={group.label}>
+              <div className="nav-group-label">{group.label}</div>
+              {group.items.map(({ label, path, icon }) => {
+                const active = path === "/dashboard" ? location.pathname === path : location.pathname.startsWith(path);
+                return (
+                  <NavLink key={path} to={path} className={`nav-item ${active ? "active" : ""}`} onClick={() => setSidebarOpen(false)}>
+                    {createElement(icon, { size: 17, strokeWidth: 1.8 })}<span>{label}</span>{active && <ChevronRight size={14} className="nav-active-indicator" />}
+                  </NavLink>
+                );
+              })}
+            </div>
           ))}
         </nav>
-      </aside>
-
-      <main className="main">
-        <header className="topbar">
-          <p className="quote">
-            <span ref={quoteRef} />
-          </p>
-          <button
-            className="logout-btn"
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
-          >
-            Logout
-          </button>
-        </header>
-
-        <section className="content">
-          <Outlet />
-        </section>
-      </main>
-
-      <aside className="right-panel">
-        <div className="card">
-          <h4>Now Playing</h4>
-          {playing ? (
-            <>
-              <div style={{ fontSize: 24 }}>{preset?.icon}</div>
-              <p>{track?.title}</p>
-            </>
-          ) : (
-            <p>Nothing playing</p>
+        <div className="sidebar-bottom">
+          <div className="rank-card">
+            <div className="rank-card-top"><span className="rank-emblem">✦</span><span>POWER LEVEL</span><strong>{String(power?.powerLevel ?? 1).padStart(6, "0")}</strong></div>
+            <div className="rank-title-row"><strong>{rank.name}</strong><span>{power?.nextRank ? `${power.nextRank} · ${Number(power.xpToNextRank).toLocaleString()} XP` : "Max form"}</span></div>
+            <div className="rank-track"><span style={{ width: `${rankProgress}%` }} /></div>
+            {power?.nextRank && <div className="rank-next-note">Next form at level {power.nextRankLevel} · {Number(power.nextRankXp).toLocaleString()} XP target · {Math.round(power.rankProgress)}%</div>}
+          </div>
+          {playing && (
+            <NavLink to="/dashboard/music" className="mini-player" onClick={() => setSidebarOpen(false)}>
+              <span className="mini-player-icon">{preset?.icon || "♫"}</span><span><small>NOW PLAYING</small><strong>{track?.title || preset?.name || "Soundscape"}</strong></span><AudioLines size={15} />
+            </NavLink>
           )}
-        </div>
-
-        <div className="card">
-          <h4>Today’s Habits</h4>
-          <ul className="habit-list">
-            {todayHabits.map((h) => (
-              <li key={h.habit_id}>
-                <label>
-                  <span>{h.title}</span>
-                  <input
-                    type="checkbox"
-                    checked={h.completed === 1}
-                    onChange={() => handleToggle(h.habit_id, h.log_date)}
-                  />
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="card">
-          <div className="quick-header-right">
-            <h4>Quick Tasks</h4>
-            <button
-              className="add-btn-right"
-              onClick={() => {
-                const input = document.getElementById("quick-task-input");
-                if (input) input.focus();
-              }}
-            >
-              ＋
-            </button>
-          </div>
-          <div className="quick-task-input-wrapper">
-            <input
-              id="quick-task-input"
-              type="text"
-              placeholder="Add a quick task..."
-              value={newTaskInput}
-              onChange={(e) => setNewTaskInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleAddQuickTask()}
-              className="quick-task-input"
-            />
-            {newTaskInput.trim() && (
-              <button
-                className="quick-task-add-btn"
-                onClick={handleAddQuickTask}
-              >
-                Add
-              </button>
-            )}
-          </div>
-          <ul className="quick-tasks-right">
-            {quickTasks.map((task) => (
-              <li key={task.id} className={task.completed ? "completed" : ""}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={() => handleToggleQuickTask(task.id)}
-                  />
-                  <span>{task.text}</span>
-                </label>
-                <button
-                  className="delete-task-btn"
-                  onClick={() => handleDeleteQuickTask(task.id)}
-                >
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ul>
+          <button className="logout-link" onClick={logout}><LogOut size={16} /> Sign out</button>
         </div>
       </aside>
+
+      <main className="dashboard-main">
+        <header className="dashboard-topbar">
+          <button className="mobile-menu-button" aria-label={sidebarOpen ? "Close menu" : "Open menu"} onClick={() => setSidebarOpen((open) => !open)}>{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</button>
+          <div className="breadcrumb"><span>ZENKAI OS</span><span className="breadcrumb-slash">/</span><strong>{currentItem?.label || "Overview"}</strong></div>
+          <div className="topbar-right"><span className="topbar-date">{dateLabel}</span><span className="topbar-quote">{quotes[quoteIndex]}</span><span className="topbar-dot" />{posterUrl && <button type="button" className="topbar-poster-button" title="Edit favorite character poster" aria-label="Edit favorite character poster" onClick={() => navigate("/dashboard/settings")}><img src={posterUrl} alt="" /></button>}<span className="topbar-rank">{rank.name}</span>{syncStatus === "error" ? <button type="button" className="sync-indicator sync-error" title={syncError} onClick={() => syncNow().catch(() => {})}>Sync issue · Retry</button> : <span className={`sync-indicator sync-${syncStatus}`} role="status">{syncStatus === "saving" ? "Saving" : syncStatus === "syncing" ? "Syncing" : "Synced"}</span>}</div>
+        </header>
+        <div className="dashboard-content"><Outlet /></div>
+        <footer className="dashboard-footer"><span>ZENKAI OS <i>·</i> Built for steady progress</span><span>{quests.filter((quest) => quest.completed).length} quests completed</span></footer>
+      </main>
     </div>
   );
 }

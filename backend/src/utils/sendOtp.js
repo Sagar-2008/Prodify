@@ -5,8 +5,8 @@ export const sendOtp = async (email, otp) => {
     service: "gmail",
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+      pass: process.env.EMAIL_PASS,
+    },
   });
 
   await transporter.sendMail({
@@ -17,6 +17,6 @@ export const sendOtp = async (email, otp) => {
       <h2>Your OTP</h2>
       <p><b>${otp}</b></p>
       <p>Valid for 5 minutes.</p>
-    `
+    `,
   });
 };

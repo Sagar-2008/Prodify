@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "../../styles/Pomodoro.css";
 import { usePomodoro } from "../../context/PomodoroContext";
 
 export default function Pomodoro() {
   const {
     sessionDuration,
-    setSessionDuration,
+    updateSessionDuration,
     breakDuration,
-    setBreakDuration,
+    updateBreakDuration,
     timeLeft,
     setTimeLeft,
     running,
@@ -21,26 +21,6 @@ export default function Pomodoro() {
   const [editingTask, setEditingTask] = useState(false);
   const [tempTaskName, setTempTaskName] = useState(taskName);
   const [showSettings, setShowSettings] = useState(false);
-  const isInitialMount = useRef(true);
-
-  // Load session and break durations from localStorage on mount only
-  useEffect(() => {
-    if (isInitialMount.current) {
-      const savedSessionDuration = localStorage.getItem("sessionDuration");
-      const savedBreakDuration = localStorage.getItem("breakDuration");
-      if (savedSessionDuration) {
-        const duration = parseInt(savedSessionDuration);
-        setSessionDuration(duration);
-        setTimeLeft(duration * 60);
-      }
-      if (savedBreakDuration) {
-        const duration = parseInt(savedBreakDuration);
-        setBreakDuration(duration);
-      }
-      isInitialMount.current = false;
-    }
-  }, []);
-
   const formatTime = (s) => {
     const m = Math.floor(s / 60)
       .toString()
@@ -77,20 +57,12 @@ export default function Pomodoro() {
 
   const handleSessionDurationChange = (e) => {
     const val = parseInt(e.target.value) || 1;
-    setSessionDuration(val);
-    localStorage.setItem("sessionDuration", val);
-    if (!running && isSession) {
-      setTimeLeft(val * 60);
-    }
+    updateSessionDuration(val);
   };
 
   const handleBreakDurationChange = (e) => {
     const val = parseInt(e.target.value) || 1;
-    setBreakDuration(val);
-    localStorage.setItem("breakDuration", val);
-    if (!running && !isSession) {
-      setTimeLeft(val * 60);
-    }
+    updateBreakDuration(val);
   };
 
   return (

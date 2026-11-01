@@ -1,87 +1,55 @@
-🚀 Prodify
+# ZENKAI OS
 
-Prodify is a productivity-focused web application designed to help users organize tasks, stay consistent, and improve daily workflow — all with a clean UI and simple structure.
+ZENKAI OS is Prodify's personal productivity command center. It brings daily quests, long-term goals, learning practice, habits, focus sessions, ambient music, analytics, and journaling into one workspace.
 
-✨ Features
+## What is included
 
-✅ Create and manage tasks easily
+- **Command center:** today’s quests, habits, focus time, learning activity, goals, and power level.
+- **Quest board:** create missions, set a category and due date, mark work complete, and earn XP.
+- **Goals and projects:** track milestones toward longer-term outcomes.
+- **Training log:** record DSA, courses, projects, reading, and other practice, including problems solved.
+- **Existing Prodify tools:** habit calendar, Pomodoro timer, ambient audio, analytics, journal, and email OTP authentication.
+- **Progression:** quests, focus sessions, training time, and completed training items add XP to a personalized Saiyan-style power curve.
+- **Personalization:** create your own quest, goal, and training categories and tune XP rewards, level pace, and transformation names.
 
-🗂️ Organized productivity workflow
+Quest, goal, training, category, and progression data sync through the authenticated Express API to MySQL. Existing browser-only quest, goal, and training entries are imported into the first account that syncs on that browser.
 
-⚡ Fast, minimal, and simple UI
+## Run locally
 
-📱 Responsive design (Mobile + Desktop)
+Use two terminals from the repository root. MySQL must be running and the backend environment must point to it (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, and the existing authentication and mail settings).
 
-🔐 Backend support for handling operations
+For a fresh database, run `Database.sql` once with MySQL. It creates the `prodify` database, its existing tables, and the new productivity tables. If the base database already exists, the migration command below safely creates any missing productivity tables.
 
-🛠️ Tech Stack
+### 1. Start the backend
 
-Frontend:
+    cd backend
+    npm install
+    npm run migrate:productivity
+    npm run dev
 
-HTML
+Configure the backend environment and database before starting it. The API listens on port 5000 by default.
 
-CSS
+### 2. Start the frontend
 
-JavaScript
+    cd frontend
+    npm install
+    npm run dev
 
-Backend:
+Open the local Vite URL printed in the terminal (usually localhost:5173).
 
-Node.js
+Keep both terminals running while you use the site. Sign in to sync your account data across sessions and devices.
 
-Express.js
+## Frontend checks
 
-📂 Project Structure
-Prodify/
-│
-├── frontend/         # Frontend UI (HTML/CSS/JS)
-├── backend/          # Backend server (Node/Express)
-├── .gitignore
-└── README.md
+    cd frontend
+    npm run lint
+    npm run build
+    npm test
 
-⚙️ Getting Started
-1️⃣ Clone the Repository
-git clone https://github.com/Sagar-2008/Prodify.git
-cd Prodify
+`npm test` runs the browser-independent timer and palette checks. Backend API tests use a disposable pair of database accounts; run `npm test` from `backend` after configuring MySQL. They do not send email. Manual browser acceptance cases, including OTP delivery and responsive interactions, are listed in [docs/TEST_PLAN.md](docs/TEST_PLAN.md).
 
-2️⃣ Install Dependencies (Backend)
-cd backend
-npm install
+## Project structure
 
-3️⃣ Run Backend Server
-npm start
-
-4️⃣ Run Frontend
-
-Open the frontend folder in your browser OR use VS Code Live Server.
-
-📌 Future Enhancements
-
-🔐 Authentication (Login / Signup)
-
-🗄️ Database integration (MongoDB / Firebase)
-
-⏰ Task reminders & deadlines
-
-🍅 Pomodoro focus timer
-
-📊 Productivity analytics dashboard
-
-🤝 Contributing
-
-Contributions are welcome!
-
-Fork the repo
-
-Create a new branch (feature-yourFeature)
-
-Commit your changes
-
-Open a Pull Request
-
-📜 License
-
-This project is licensed under the MIT License.
-
-⭐ Support
-
-If you like Prodify, consider giving it a ⭐ on GitHub — it really helps!
+- frontend/ — React 19, Vite, React Router, and the ZENKAI OS interface.
+- backend/ — Express API, authentication, habits, Pomodoro sessions, and journal routes.
+- Database.sql — database schema.

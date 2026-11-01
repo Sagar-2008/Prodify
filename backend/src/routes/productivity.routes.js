@@ -1,0 +1,26 @@
+import express from "express";
+import { verifyToken } from "../middleware/auth.middleware.js";
+import * as productivity from "../controllers/productivity.controller.js";
+
+const router = express.Router();
+router.use(verifyToken);
+router.get("/", productivity.getProductivity);
+router.post("/import-local", productivity.importLocalData);
+router.patch("/settings", productivity.updateSettings);
+router.get("/profile", productivity.getProfile);
+router.patch("/profile/theme", productivity.updateTheme);
+router.put("/profile/artwork", productivity.saveArtwork);
+router.get("/profile/artwork", productivity.getArtwork);
+router.delete("/profile/artwork", productivity.deleteArtwork);
+router.post("/categories", productivity.createCategory);
+router.delete("/categories/:id", productivity.deleteCategory);
+router.post("/quests", productivity.createQuest);
+router.patch("/quests/:id", productivity.updateQuest);
+router.delete("/quests/:id", productivity.deleteQuest);
+router.post("/goals", productivity.createGoal);
+router.patch("/goals/:id", productivity.updateGoal);
+router.delete("/goals/:id", productivity.deleteGoal);
+router.post("/training", productivity.createTrainingEntry);
+router.patch("/training/:id", productivity.updateTrainingEntry);
+router.delete("/training/:id", productivity.deleteTrainingEntry);
+export default router;

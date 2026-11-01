@@ -1,312 +1,86 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { createElement } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowDown, ArrowRight, AudioLines, BarChart3, BookOpenCheck, Check, CirclePlay, Compass, Sparkles, Swords, Timer, Zap } from "lucide-react";
 import "../styles/Landing.css";
+
+const modules = [
+  { icon: Swords, name: "Quest board", description: "Turn priorities into small missions you can finish and learn from.", accent: "orange" },
+  { icon: Compass, name: "Goals & projects", description: "Keep long-term plans visible and move them forward milestone by milestone.", accent: "blue" },
+  { icon: Timer, name: "Time chamber", description: "Use focused work and intentional breaks to protect your attention.", accent: "violet" },
+  { icon: Zap, name: "Training log", description: "Record DSA practice, learning sessions, and the problems you solve.", accent: "gold" },
+  { icon: AudioLines, name: "Soundscape", description: "Choose an ambient mix to set the tone for a focused session.", accent: "teal" },
+  { icon: BarChart3, name: "Habits & insights", description: "Notice your patterns and build a routine that works for you.", accent: "green" },
+];
 
 export default function Landing() {
   const navigate = useNavigate();
-
-  // ✅ Auto-redirect logged-in users
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
+    if (localStorage.getItem("token")) navigate("/dashboard");
   }, [navigate]);
 
-  const handleSignup = () => navigate("/signup");
-  const handleLogin = () => navigate("/login");
-
-  const handleWatchDemo = () => {
-    console.log("Opening demo video...");
-  };
-
   return (
-    <div className="landing">
-      <nav className="nav">
-        <h2 className="logo">Prodify</h2>
-        <div className="nav-links">
-          <a href="#features">Features</a>
-          <a href="#how">How it Works</a>
-          <a href="#testimonials">Reviews</a>
-          <button className="btn-secondary" onClick={handleLogin}>
-            Login
-          </button>
-          <button className="btn-primary" onClick={handleSignup}>
-            Get Started
-          </button>
-        </div>
-      </nav>
+    <div className="landing-shell">
+      <header className="landing-nav-wrap">
+        <nav className="landing-nav">
+          <a className="landing-brand" href="#top" aria-label="ZENKAI OS home"><span className="landing-brand-mark"><i /></span><span><strong>ZENKAI</strong><small>PERSONAL OS</small></span></a>
+          <div className="landing-nav-links"><a href="#system">The system</a><a href="#method">How it works</a><Link to="/login">Sign in</Link><Link className="nav-cta" to="/signup">Build your system <ArrowRight size={14} /></Link></div>
+        </nav>
+      </header>
 
-      <section className="hero">
-        <div className="hero-badge">
-          🎯 Trusted by 10,000+ students worldwide
-        </div>
-        <h1>Build habits. Master focus.</h1>
-        <p className="hero-sub">
-          Prodify helps students build consistency, stay focused, and visualize
-          real academic progress — without burnout.
-        </p>
-
-        <div className="hero-actions">
-          <button className="btn-primary" onClick={handleSignup}>
-            Create Free Account
-          </button>
-          <button className="btn-secondary" onClick={handleWatchDemo}>
-            Watch Demo
-          </button>
-        </div>
-
-        <p className="hero-note">
-          Designed for deep work • Calm UI • Habit mastery system
-        </p>
-
-        <div className="hero-stats">
-          <div className="stat">
-            <h3>2.5M+</h3>
-            <p>Focus hours logged</p>
-          </div>
-          <div className="stat">
-            <h3>87%</h3>
-            <p>Improved GPA</p>
-          </div>
-          <div className="stat">
-            <h3>4.9/5</h3>
-            <p>Student rating</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="features" id="features">
-        <h2 className="section-title">Everything you need to succeed</h2>
-        <div className="features-grid">
-          <div className="card">
-            <div className="card-icon">🎯</div>
-            <h3>Habit Mastery System</h3>
-            <p>
-              Go beyond streaks. Progress through mastery levels like Rookie,
-              Skilled, Expert, and Master as you build lasting habits.
-            </p>
+      <main id="top">
+        <section className="landing-hero">
+          <div className="landing-hero-grid" />
+          <div className="landing-hero-copy">
+            <span className="landing-kicker"><span className="kicker-light" /> A PERSONAL OPERATING SYSTEM</span>
+            <h1>Your next level<br />is <em>built daily.</em></h1>
+            <p className="landing-lede">A calm command center for the work that matters: focus sessions, habits, learning, and the long game you are building.</p>
+            <div className="landing-hero-actions"><Link className="landing-primary" to="/signup">Start your training arc <ArrowRight size={16} /></Link><a className="landing-secondary" href="#system"><span><ArrowDown size={15} /></span> Explore the system</a></div>
+            <div className="landing-principles"><span><Check size={13} /> Built around real actions</span><i /><span><Check size={13} /> Progress stays yours</span><i /><span><Check size={13} /> Start small, grow steadily</span></div>
           </div>
 
-          <div className="card">
-            <div className="card-icon">⏱️</div>
-            <h3>Deep Focus Sessions</h3>
-            <p>
-              Built-in Pomodoro timer with focus logging, ambient music, and
-              real impact on your habit growth.
-            </p>
-          </div>
-
-          <div className="card">
-            <div className="card-icon">📊</div>
-            <h3>Visual Progress</h3>
-            <p>
-              Weekly insights, streak heatmaps, and focus trends that make your
-              improvement crystal clear.
-            </p>
-          </div>
-
-          <div className="card">
-            <div className="card-icon">🧠</div>
-            <h3>Smart Scheduling</h3>
-            <p>
-              AI-powered task prioritization that adapts to your energy levels
-              and helps you work on what matters most.
-            </p>
-          </div>
-
-          <div className="card">
-            <div className="card-icon">🏆</div>
-            <h3>Achievement System</h3>
-            <p>
-              Unlock badges and milestones as you hit study goals, keeping
-              motivation high throughout the semester.
-            </p>
-          </div>
-
-          <div className="card">
-            <div className="card-icon">📱</div>
-            <h3>Cross-Platform Sync</h3>
-            <p>
-              Seamlessly switch between desktop and mobile. Your progress
-              follows you everywhere you study.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="how" id="how">
-        <h2>How Prodify Works</h2>
-        <p className="section-subtitle">
-          Three simple steps to transform your productivity
-        </p>
-
-        <div className="steps">
-          <div className="step">
-            <span>01</span>
-            <h4>Create habits & goals</h4>
-            <p>
-              Define what you want to achieve and break it into manageable daily
-              habits
-            </p>
-          </div>
-
-          <div className="step">
-            <span>02</span>
-            <h4>Focus using deep work mode</h4>
-            <p>
-              Enter distraction-free sessions with timers, music, and progress
-              tracking
-            </p>
-          </div>
-
-          <div className="step">
-            <span>03</span>
-            <h4>Track mastery & progress</h4>
-            <p>
-              Watch your skills level up and celebrate milestones along the way
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="testimonials" id="testimonials">
-        <h2>Loved by students everywhere</h2>
-        <div className="testimonial-grid">
-          <div className="testimonial">
-            <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p>
-              "Prodify helped me maintain a 3.8 GPA while working part-time. The
-              habit system is a game-changer!"
-            </p>
-            <div className="author">
-              <strong>Sarah Chen</strong>
-              <span>CS Major, Stanford</span>
+          <div className="landing-preview-wrap" aria-label="Sample command center preview">
+            <div className="preview-orbit preview-orbit-a" /><div className="preview-orbit preview-orbit-b" />
+            <div className="landing-preview">
+              <div className="preview-topline"><div className="preview-brand"><span className="preview-brand-dot" /> ZENKAI OS</div><span className="preview-label">SAMPLE COMMAND CENTER</span></div>
+              <div className="preview-welcome"><div><span>YOUR NEXT STEP</span><strong>Make today count.</strong></div><div className="preview-level"><span>POWER LEVEL</span><strong>000001 <small>PL</small></strong><i><b /></i></div></div>
+              <div className="preview-stat-row"><div className="preview-stat"><span>FOCUS</span><strong>02<span> sessions</span></strong></div><div className="preview-stat"><span>QUESTS</span><strong>03<span> in progress</span></strong></div><div className="preview-stat"><span>TRAINING</span><strong>04<span> problems</span></strong></div></div>
+              <div className="preview-quest-head"><span>TODAY’S QUESTS</span><span>VIEW BOARD ↗</span></div>
+              <div className="preview-quest"><span className="preview-check"><Check size={11} /></span><span><strong>Review binary search patterns</strong><small>DSA DOJO</small></span><b>+20 XP</b></div>
+              <div className="preview-quest preview-quest-pending"><span className="preview-check" /><span><strong>Ship one small project improvement</strong><small>BUILD</small></span><b>+30 XP</b></div>
+              <div className="preview-focus"><span className="preview-focus-icon"><Timer size={15} /></span><span><small>TIME CHAMBER</small><strong>25:00</strong></span><span className="preview-play"><CirclePlay size={16} /></span></div>
+              <div className="preview-footnote">Illustrative preview · Your dashboard reflects your own activity.</div>
             </div>
           </div>
+          <div className="hero-bottom-mark"><span>01</span><i /> A SYSTEM FOR STEADY PROGRESS</div>
+        </section>
 
-          <div className="testimonial">
-            <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p>
-              "Finally, a productivity app that doesn't make me feel guilty. The
-              mastery levels keep me motivated."
-            </p>
-            <div className="author">
-              <strong>Marcus Thompson</strong>
-              <span>Engineering, MIT</span>
-            </div>
+        <section className="landing-section system-section" id="system">
+          <div className="section-intro"><div><span className="landing-kicker"><Sparkles size={13} /> ONE PLACE. YOUR WHOLE ARC.</span><h2>Tools for the <em>work in front of you.</em></h2></div><p>Build your own rhythm with a connected set of practical tools. Use what helps, leave what does not.</p></div>
+          <div className="module-grid">
+            {modules.map(({ icon, name, description, accent }, index) => <article className={`module-card accent-${accent}`} key={name}><div className="module-card-top"><span className="module-icon">{createElement(icon, { size: 19 })}</span><span className="module-number">0{index + 1}</span></div><h3>{name}</h3><p>{description}</p><span className="module-line" /></article>)}
           </div>
+        </section>
 
-          <div className="testimonial">
-            <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p>
-              "I went from procrastinating everything to completing assignments
-              days early. This app changed my life."
-            </p>
-            <div className="author">
-              <strong>Emily Rodriguez</strong>
-              <span>Pre-Med, UCLA</span>
-            </div>
+        <section className="landing-section method-section" id="method">
+          <div className="method-heading"><span className="landing-kicker">THE ZENKAI LOOP</span><h2>Make progress<br /><em>feel possible.</em></h2><p>No grand reset required. Just a useful loop you can return to.</p></div>
+          <div className="method-steps">
+            <article><span className="step-index">01</span><div className="step-icon"><TargetLike /></div><h3>Choose your mission</h3><p>Pick a clear next action or a habit worth repeating.</p></article>
+            <article><span className="step-index">02</span><div className="step-icon"><Timer size={19} /></div><h3>Protect your focus</h3><p>Work in a session, take a break, and return with intention.</p></article>
+            <article><span className="step-index">03</span><div className="step-icon"><BookOpenCheck size={19} /></div><h3>See your growth</h3><p>Log the practice. Celebrate completion. Adjust your plan.</p></article>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="comparison">
-        <h2>Why choose Prodify?</h2>
-        <div className="comparison-table">
-          <div className="comparison-row header">
-            <div></div>
-            <div>Other Apps</div>
-            <div className="highlight">Prodify</div>
-          </div>
+        <section className="landing-cta">
+          <div className="cta-sigil"><span>✦</span></div><div><span className="landing-kicker">YOUR JOURNEY. YOUR PACE.</span><h2>Start with one good next step.</h2><p>Set up your personal command center and shape it as you go.</p></div><Link className="landing-primary" to="/signup">Create your account <ArrowRight size={16} /></Link>
+        </section>
+      </main>
 
-          <div className="comparison-row">
-            <div>Habit tracking</div>
-            <div>✓</div>
-            <div>✓</div>
-          </div>
-
-          <div className="comparison-row">
-            <div>Focus timer</div>
-            <div>✓</div>
-            <div>✓</div>
-          </div>
-
-          <div className="comparison-row">
-            <div>Mastery progression system</div>
-            <div>✗</div>
-            <div>✓</div>
-          </div>
-
-          <div className="comparison-row">
-            <div>Student-optimized design</div>
-            <div>✗</div>
-            <div>✓</div>
-          </div>
-
-          <div className="comparison-row">
-            <div>Burnout prevention tools</div>
-            <div>✗</div>
-            <div>✓</div>
-          </div>
-
-          <div className="comparison-row">
-            <div>Free tier available</div>
-            <div>Limited</div>
-            <div>Full access</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="cta">
-        <h2>Ready to take control of your productivity?</h2>
-        <p>Start building habits that last — one focused session at a time.</p>
-        <button className="btn-primary btn-large" onClick={handleSignup}>
-          Start with Prodify — It's Free
-        </button>
-        <p className="cta-note">
-          No credit card required • 100% free forever plan
-        </p>
-      </section>
-
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3 className="logo">Prodify</h3>
-            <p>
-              Empowering students to build better habits and achieve academic
-              excellence.
-            </p>
-          </div>
-
-          <div className="footer-section">
-            <h4>Product</h4>
-            <a href="#features">Features</a>
-            <a href="#how">How it Works</a>
-            <a href="#">Pricing</a>
-            <a href="#">FAQ</a>
-          </div>
-
-          <div className="footer-section">
-            <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact</a>
-          </div>
-
-          <div className="footer-section">
-            <h4>Legal</h4>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Security</a>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          © 2026 Prodify · Student Capstone Project
-        </div>
-      </footer>
+      <footer className="landing-footer"><a className="footer-brand" href="#top"><span className="landing-brand-mark"><i /></span><strong>ZENKAI OS</strong></a><span>Personal operating system · A new chapter for Prodify</span><div><Link to="/login">Sign in</Link><Link to="/signup">Get started</Link></div></footer>
     </div>
   );
+}
+
+function TargetLike() {
+  return <span className="target-like"><span /><span /><i /></span>;
 }

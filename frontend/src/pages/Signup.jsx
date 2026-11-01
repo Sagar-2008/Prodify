@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "../styles/Auth.css";
 
 export default function Signup() {
@@ -22,15 +22,27 @@ export default function Signup() {
       setError("");
       navigate("/verify-otp");
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed");
+      setError(err.response?.data?.message || (err.request
+        ? "Can't reach the Prodify API at localhost:5000. Start the backend in the backend folder, then retry."
+        : "Signup failed. Check the form and try again."));
     }
   };
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <h2>Create your account</h2>
-        <p className="auth-sub">Start building habits that actually stick.</p>
+      <Link className="auth-brand" to="/"><span className="auth-brand-mark"><i /></span><span><strong>ZENKAI</strong><small>PERSONAL OS</small></span></Link>
+      <main className="auth-main">
+        <section className="auth-story">
+          <span className="auth-eyebrow">A NEW CHAPTER FOR PRODIFY</span>
+          <h1>Build your next level, one day at a time.</h1>
+          <p>Bring focus, goals, habits, and learning into one calm place. Start with what matters today.</p>
+          <div className="auth-modules"><span>01 <i /> Quest board</span><span>02 <i /> Time chamber</span><span>03 <i /> Training log</span></div>
+          <div className="auth-story-sigil"><span>✦</span></div>
+        </section>
+        <div className="auth-card">
+          <span className="auth-form-kicker">START YOUR JOURNEY</span>
+          <h2>Create your account</h2>
+          <p className="auth-sub">Make space for the work you want to do.</p>
 
         <form onSubmit={handleSubmit}>
           <label>Email</label>
@@ -51,16 +63,18 @@ export default function Signup() {
             required
           />
 
-          <button className="btn-primary auth-btn" type="submit">
-            Create Account
+          <button className="auth-btn" type="submit">
+            Create account <span>→</span>
           </button>
         </form>
-        {error && <p className="auth-error">{error}</p>}
+        {error && <p className="auth-error" role="alert">{error}</p>}
 
         <p className="auth-footer">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
-      </div>
+        </div>
+      </main>
+      <Link className="auth-home-link" to="/">← Back to ZENKAI OS</Link>
     </div>
   );
 }
