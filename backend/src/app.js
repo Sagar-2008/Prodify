@@ -11,6 +11,9 @@ import { db } from "./config/db.js";
 
 export const app = express();
 
+// Vercel's Express runtime requires a default export from src/app.js.
+export default app;
+
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
   .split(",")
   .map((origin) => origin.trim().replace(/\/$/, ""))
