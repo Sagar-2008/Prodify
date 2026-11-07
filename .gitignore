@@ -10,6 +10,7 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 backend/.env
+TiDB.*
 
 # ================== Build Outputs ==================
 dist/
