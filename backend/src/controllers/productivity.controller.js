@@ -4,7 +4,7 @@ import { db } from "../config/db.js";
 const DEFAULT_RANKS = ["Earthling", "Saiyan", "Super Saiyan", "Ascended Saiyan", "Super Saiyan 2", "Super Saiyan 3", "Super Saiyan God", "Ultra Instinct"];
 const MODULES = new Set(["quest", "goal", "training"]);
 const THEMES = new Set(["capsule", "solar", "namek", "kai", "rose"]);
-const MAX_ARTWORK_BYTES = 4 * 1024 * 1024;
+const MAX_ARTWORK_BYTES = 3 * 1024 * 1024;
 const today = () => new Date().toISOString().slice(0, 10);
 const text = (value, max = 160) => typeof value === "string" ? value.trim().slice(0, max) : "";
 const validDate = (value) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
@@ -422,7 +422,7 @@ export const saveArtwork = async (req, res) => {
 
   const [, mime, encoded] = match;
   const bytes = Buffer.from(encoded, "base64");
-  if (!bytes.length || bytes.length > MAX_ARTWORK_BYTES) return res.status(413).json({ message: "Choose an image smaller than 4 MB" });
+  if (!bytes.length || bytes.length > MAX_ARTWORK_BYTES) return res.status(413).json({ message: "Choose an image smaller than 3 MB" });
   if (!imageMatchesType(mime, bytes)) return res.status(400).json({ message: "The image contents do not match their file type" });
 
   const fileName = text(req.body?.fileName, 160).replace(/[\\/\0]/g, "");

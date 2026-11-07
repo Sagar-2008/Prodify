@@ -37,6 +37,8 @@ coverage/
 # ================== MySQL ==================
 *.sql
 *.sqlite
+!Database.sql
+!backend/src/migrations/*.sql
 
 # ================== Misc ==================
 .cache/

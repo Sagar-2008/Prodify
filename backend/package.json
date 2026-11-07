@@ -5,6 +5,8 @@
   "scripts": {
     "test": "node --test",
     "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrate:base": "node src/migrations/run-base.js",
     "migrate:productivity": "node src/migrations/run-productivity.js"
   },
   "keywords": [],

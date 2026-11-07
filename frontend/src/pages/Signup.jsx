@@ -1,4 +1,4 @@
-import axios from "axios";
+import { API } from "../api/client";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../styles/Auth.css";
@@ -14,7 +14,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/auth/register", {
+      await API.post("/auth/register", {
         email,
         password,
       });
@@ -23,7 +23,7 @@ export default function Signup() {
       navigate("/verify-otp");
     } catch (err) {
       setError(err.response?.data?.message || (err.request
-        ? "Can't reach the Prodify API at localhost:5000. Start the backend in the backend folder, then retry."
+        ? "Could not reach the API. If this is a free deployment, it may be waking up; try again shortly."
         : "Signup failed. Check the form and try again."));
     }
   };

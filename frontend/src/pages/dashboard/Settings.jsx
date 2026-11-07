@@ -53,8 +53,8 @@ export default function Settings() {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type) || file.size > 4 * 1024 * 1024) {
-      setAppearanceError("Choose a PNG, JPEG, WebP, or GIF image under 4 MB.");
+    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type) || file.size > 3 * 1024 * 1024) {
+      setAppearanceError("Choose a PNG, JPEG, WebP, or GIF image under 3 MB.");
       return;
     }
     setAppearanceSaving(true);
@@ -106,7 +106,7 @@ export default function Settings() {
         <div className="poster-preview" aria-label="Favorite character poster preview">
           {posterUrl ? <img src={posterUrl} alt={`Favorite character poster${profile.posterName ? `: ${profile.posterName}` : ""}`} /> : <div className="poster-placeholder"><ImagePlus size={24} /><span>YOUR CHARACTER ART</span><small>A portrait or poster you love</small></div>}
         </div>
-        <div className="poster-copy"><span className="eyebrow">MAKE THIS SPACE YOURS</span><h3>Your favorite character, on your dashboard.</h3><p>Upload a small poster or portrait. It appears in the top bar and stays private to your account.</p><div className="poster-actions"><input id="character-art-upload" className="visually-hidden-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handleArtwork} disabled={appearanceSaving} /><label htmlFor="character-art-upload" className={`quiet-button poster-upload-button ${appearanceSaving ? "is-disabled" : ""}`}><ImagePlus size={14} /> {appearanceSaving ? "Saving…" : posterUrl ? "Replace image" : "Choose image"}</label>{posterUrl && <button type="button" className="quiet-button" onClick={handleRemoveArtwork} disabled={appearanceSaving}><Trash2 size={13} /> Remove</button>}</div><small className="poster-file-note">PNG, JPEG, WebP, or GIF · maximum 4 MB</small></div>
+          <div className="poster-copy"><span className="eyebrow">MAKE THIS SPACE YOURS</span><h3>Your favorite character, on your dashboard.</h3><p>Upload a small poster or portrait. It appears in the top bar and stays private to your account.</p><div className="poster-actions"><input id="character-art-upload" className="visually-hidden-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handleArtwork} disabled={appearanceSaving} /><label htmlFor="character-art-upload" className={`quiet-button poster-upload-button ${appearanceSaving ? "is-disabled" : ""}`}><ImagePlus size={14} /> {appearanceSaving ? "Saving…" : posterUrl ? "Replace image" : "Choose image"}</label>{posterUrl && <button type="button" className="quiet-button" onClick={handleRemoveArtwork} disabled={appearanceSaving}><Trash2 size={13} /> Remove</button>}</div><small className="poster-file-note">PNG, JPEG, WebP, or GIF · maximum 3 MB</small></div>
       </div>
       {appearanceError && <p className="form-error" role="alert">{appearanceError}</p>}
       {appearanceMessage && <p className="form-success" role="status">{appearanceMessage}</p>}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { API } from "../api/client";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
 
@@ -15,7 +15,7 @@ export default function VerifyOtp() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/auth/verify-otp", {
+      await API.post("/auth/verify-otp", {
         email,
         otp,
       });
@@ -28,7 +28,7 @@ export default function VerifyOtp() {
 
   const handleResend = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/resend-otp", {
+      await API.post("/auth/resend-otp", {
         email,
       });
 

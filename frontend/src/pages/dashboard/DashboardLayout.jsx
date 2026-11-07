@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createElement } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { API } from "../../api/client";
 import {
   AudioLines, BarChart3, BookOpenText, CheckSquare2, ChevronRight, Settings2,
   Compass, LayoutDashboard, LogOut, Menu, Swords, Timer, X,
@@ -38,9 +38,7 @@ export default function DashboardLayout() {
   const [quoteIndex, setQuoteIndex] = useState(0);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/user/me", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }).catch(() => {
+    API.get("/user/me").catch(() => {
       localStorage.removeItem("token");
       navigate("/login");
     });

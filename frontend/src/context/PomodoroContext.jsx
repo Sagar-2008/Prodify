@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
-import axios from "axios";
+import { API } from "../api/client";
 import { normalizeTimerDuration, readTimerDuration } from "../config/focusSettings";
 
 const PomodoroContext = createContext();
@@ -110,19 +110,10 @@ export const PomodoroProvider = ({ children }) => {
 
         // ✅ SAVE ONLY FOCUS SESSION - using current state values
         if (isSession) {
-          axios
-            .post(
-              "http://localhost:5000/pomodoro/session",
-              {
-                taskName,
-                duration: sessionDuration,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-              },
-            )
+          API.post("/pomodoro/session", {
+            taskName,
+            duration: sessionDuration,
+          })
             .then(() => window.dispatchEvent(new Event("productivity-data-updated")))
             .catch(console.error);
         }

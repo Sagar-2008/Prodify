@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { API } from "../api/client";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
 
@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", {
+      const res = await API.post("/auth/login", {
         email,
         password,
       });
@@ -23,7 +23,7 @@ export default function Login() {
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || (err.request
-        ? "Can't reach the Prodify API at localhost:5000. Start the backend in the backend folder, then retry."
+        ? "Could not reach the API. If this is a free deployment, it may be waking up; try again shortly."
         : "Login failed. Check your details and try again."));
     }
   };

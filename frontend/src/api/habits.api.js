@@ -1,14 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({
-  baseURL: "http://localhost:5000",
-});
-
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  return req;
-});
+import { API } from "./client";
 
 export const addHabit = (title) =>
   API.post("/habits", { title });
