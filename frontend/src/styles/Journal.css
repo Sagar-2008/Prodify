@@ -1,6 +1,6 @@
 /* ===== JOURNAL PAGE ===== */
 .journal-page {
-  color: #fff;
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -23,8 +23,8 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(124, 58, 237, 0.2);
-  border-top: 3px solid #7c3aed;
+  border: 3px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
+  border-top: 3px solid var(--theme-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -44,7 +44,7 @@
   font-size: 32px;
   font-weight: 800;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 62%, white), var(--theme-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -63,11 +63,11 @@
   gap: 16px;
 }
 
-.stat-card {
-  background: linear-gradient(135deg, rgba(124, 60, 237, 0.15), rgba(99, 102, 241, 0.1));
+.journal-page .stat-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 15%, var(--theme-panel)), color-mix(in srgb, var(--theme-warm) 10%, var(--theme-panel)));
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid rgba(124, 60, 237, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -78,7 +78,7 @@
 .stat-number {
   font-size: 28px;
   font-weight: 800;
-  background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 62%, white), var(--theme-warm));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -94,14 +94,14 @@
 
 /* ===== CALENDAR SECTION ===== */
 .journal-calendar-section {
-  background: linear-gradient(135deg, rgba(124, 60, 237, 0.15), rgba(99, 102, 241, 0.1));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 15%, var(--theme-panel)), color-mix(in srgb, var(--theme-warm) 10%, var(--theme-panel)));
   padding: 28px;
   border-radius: 14px;
-  border: 1px solid rgba(124, 60, 237, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
 }
 
 /* ===== MONTH NAVIGATION ===== */
-.month-nav {
+.journal-page .month-nav {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,8 +109,8 @@
   margin-bottom: 28px;
 }
 
-.month-nav button {
-  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+.journal-page .month-nav button {
+  background: linear-gradient(135deg, var(--theme-accent), var(--theme-warm));
   border: none;
   color: white;
   width: 40px;
@@ -119,18 +119,18 @@
   cursor: pointer;
   font-size: 18px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accent) 30%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.month-nav button:hover {
+.journal-page .month-nav button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--theme-accent) 40%, transparent);
 }
 
-.month-nav h2 {
+.journal-page .month-nav h2 {
   font-size: 24px;
   font-weight: 700;
   margin: 0;
@@ -139,13 +139,13 @@
 }
 
 /* ===== WEEKDAY HEADERS ===== */
-.weekday-row {
+.journal-page .weekday-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
   margin-bottom: 16px;
   padding: 0 0 16px 0;
-  border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-accent) 15%, transparent);
 }
 
 .weekday-header {
@@ -165,9 +165,9 @@
 }
 
 /* ===== DAY CARD ===== */
-.day-card {
-  background: rgba(10, 14, 39, 0.4);
-  border: 1px solid rgba(124, 58, 237, 0.2);
+.journal-page .day-card {
+  background: color-mix(in srgb, var(--theme-bg) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
   border-radius: 12px;
   padding: 12px;
   min-height: 110px;
@@ -180,20 +180,20 @@
   overflow: hidden;
 }
 
-.day-card.empty {
+.journal-page .day-card.empty {
   background: transparent;
   border: none;
   cursor: default;
 }
 
-.day-card:hover:not(.empty) {
-  background: rgba(124, 58, 237, 0.15);
-  border-color: #7c3aed;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+.journal-page .day-card:hover:not(.empty) {
+  background: color-mix(in srgb, var(--theme-accent) 15%, var(--theme-panel));
+  border-color: var(--theme-accent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accent) 20%, transparent);
   transform: translateY(-2px);
 }
 
-.day-num {
+.journal-page .day-num {
   font-size: 13px;
   font-weight: 700;
   opacity: 0.8;
@@ -201,7 +201,7 @@
 
 /* ===== ADD ENTRY BUTTON ===== */
 .add-entry-btn {
-  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, var(--theme-accent), var(--theme-warm));
   border: none;
   color: white;
   width: 32px;
@@ -215,12 +215,12 @@
   align-items: center;
   justify-content: center;
   margin: auto 0 0 0;
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-accent) 30%, transparent);
 }
 
 .add-entry-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accent) 40%, transparent);
 }
 
 /* ===== ENTRY PREVIEW ===== */
@@ -240,7 +240,7 @@
   font-size: 12px;
   font-weight: 600;
   margin: 0;
-  color: #a78bfa;
+  color: var(--theme-accent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -265,8 +265,8 @@
 
 /* ===== MODAL ===== */
 .journal-modal {
-  background: linear-gradient(135deg, rgba(15, 20, 40, 0.95), rgba(12, 18, 34, 0.95));
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-panel-raised) 96%, transparent), color-mix(in srgb, var(--theme-panel) 96%, transparent));
+  border: 1px solid var(--theme-line);
   border-radius: 16px;
   width: 100%;
   max-width: 600px;
@@ -281,7 +281,7 @@
 /* ===== MODAL HEADER ===== */
 .modal-header {
   padding: 24px;
-  border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-accent) 15%, transparent);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -291,7 +291,7 @@
   font-size: 18px;
   font-weight: 700;
   margin: 0;
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 62%, white), var(--theme-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -300,7 +300,7 @@
 .close-btn {
   background: none;
   border: none;
-  color: #a78bfa;
+  color: var(--theme-accent);
   font-size: 24px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -332,7 +332,7 @@
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background: rgba(124, 58, 237, 0.3);
+  background: color-mix(in srgb, var(--theme-accent) 30%, transparent);
   border-radius: 3px;
 }
 
@@ -358,8 +358,8 @@
 }
 
 .mood-btn {
-  background: rgba(124, 58, 237, 0.1);
-  border: 2px solid rgba(124, 58, 237, 0.2);
+  background: color-mix(in srgb, var(--theme-accent) 10%, var(--theme-panel));
+  border: 2px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
   padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
@@ -371,21 +371,21 @@
 }
 
 .mood-btn:hover {
-  border-color: #7c3aed;
-  background: rgba(124, 58, 237, 0.15);
+  border-color: var(--theme-accent);
+  background: color-mix(in srgb, var(--theme-accent) 15%, var(--theme-panel));
 }
 
 .mood-btn.active {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(99, 102, 241, 0.2));
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 30%, var(--theme-panel)), color-mix(in srgb, var(--theme-warm) 20%, var(--theme-panel)));
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent) 20%, transparent);
 }
 
 /* ===== INPUTS ===== */
 .journal-title-input {
   padding: 12px 16px;
-  background: rgba(10, 14, 39, 0.5);
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: color-mix(in srgb, var(--theme-bg) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
   border-radius: 10px;
   color: #fff;
   font-size: 14px;
@@ -399,15 +399,15 @@
 
 .journal-title-input:focus {
   outline: none;
-  border-color: #7c3aed;
-  background: rgba(124, 58, 237, 0.1);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  border-color: var(--theme-accent);
+  background: color-mix(in srgb, var(--theme-accent) 10%, var(--theme-panel));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent) 20%, transparent);
 }
 
 .journal-content-textarea {
   padding: 16px;
-  background: rgba(10, 14, 39, 0.5);
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: color-mix(in srgb, var(--theme-bg) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
   border-radius: 10px;
   color: #fff;
   font-size: 14px;
@@ -424,9 +424,9 @@
 
 .journal-content-textarea:focus {
   outline: none;
-  border-color: #7c3aed;
-  background: rgba(124, 58, 237, 0.1);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  border-color: var(--theme-accent);
+  background: color-mix(in srgb, var(--theme-accent) 10%, var(--theme-panel));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent) 20%, transparent);
 }
 
 /* ===== MODAL ACTIONS ===== */
@@ -434,7 +434,7 @@
   display: flex;
   gap: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba(124, 58, 237, 0.15);
+  border-top: 1px solid color-mix(in srgb, var(--theme-accent) 15%, transparent);
   justify-content: flex-end;
 }
 
@@ -451,25 +451,25 @@
 }
 
 .save-btn {
-  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, var(--theme-accent), var(--theme-warm));
   color: white;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accent) 30%, transparent);
 }
 
 .save-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--theme-accent) 40%, transparent);
 }
 
 .cancel-btn {
-  background: rgba(124, 58, 237, 0.1);
-  color: #a78bfa;
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: color-mix(in srgb, var(--theme-accent) 10%, var(--theme-panel));
+  color: var(--theme-accent);
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 20%, transparent);
 }
 
 .cancel-btn:hover {
-  background: rgba(124, 58, 237, 0.15);
-  border-color: #7c3aed;
+  background: color-mix(in srgb, var(--theme-accent) 15%, var(--theme-panel));
+  border-color: var(--theme-accent);
 }
 
 .delete-btn {
@@ -494,7 +494,7 @@
     gap: 6px;
   }
 
-  .day-card {
+  .journal-page .day-card {
     min-height: 80px;
     padding: 8px;
   }
@@ -512,3 +512,4 @@
     padding: 18px;
   }
 }
+

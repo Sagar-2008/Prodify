@@ -119,8 +119,8 @@ export default function Analytics() {
       >
         <defs>
           <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="var(--theme-accent)" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="var(--theme-accent)" stopOpacity="0.02" />
           </linearGradient>
         </defs>
 
@@ -132,7 +132,7 @@ export default function Analytics() {
               y1={padding.top + (1 - ratio) * chartHeight}
               x2={padding.left + chartWidth}
               y2={padding.top + (1 - ratio) * chartHeight}
-              stroke="#1e2440"
+              stroke="var(--theme-line)"
               strokeDasharray="4"
               strokeWidth="1"
             />
@@ -141,7 +141,7 @@ export default function Analytics() {
               y={padding.top + (1 - ratio) * chartHeight + 5}
               textAnchor="end"
               fontSize="12"
-              fill="#d6d9ff"
+              fill="var(--muted)"
               fontWeight="500"
             >
               {Math.round(ratio * maxCount)}
@@ -155,7 +155,7 @@ export default function Analytics() {
           y1={padding.top}
           x2={padding.left}
           y2={padding.top + chartHeight}
-          stroke="#d6d9ff"
+          stroke="var(--muted)"
           strokeWidth="2"
         />
         <line
@@ -163,7 +163,7 @@ export default function Analytics() {
           y1={padding.top + chartHeight}
           x2={padding.left + chartWidth}
           y2={padding.top + chartHeight}
-          stroke="#d6d9ff"
+          stroke="var(--muted)"
           strokeWidth="2"
         />
 
@@ -173,7 +173,7 @@ export default function Analytics() {
         {/* Line */}
         <path
           d={pathData}
-          stroke="#4f46e5"
+          stroke="var(--theme-accent)"
           strokeWidth="2.5"
           fill="none"
           strokeLinecap="round"
@@ -183,7 +183,7 @@ export default function Analytics() {
         {/* Points */}
         {points.map((point, idx) => (
           <g key={`point-${idx}`}>
-            <circle cx={point.x} cy={point.y} r="3" fill="#4f46e5" />
+            <circle cx={point.x} cy={point.y} r="3" fill="var(--theme-accent)" />
             <circle cx={point.x} cy={point.y} r="1.5" fill="white" />
           </g>
         ))}
@@ -196,7 +196,7 @@ export default function Analytics() {
             y={padding.top + chartHeight + 35}
             textAnchor="middle"
             fontSize="10"
-            fill="#d6d9ff"
+            fill="var(--muted)"
             fontWeight="500"
           >
             {point.day}
@@ -267,3 +267,4 @@ export default function Analytics() {
     </div>
   );
 }
+

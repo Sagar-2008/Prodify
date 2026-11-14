@@ -5,7 +5,7 @@
 .analytics-page h1 {
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #eaeaf0;
+  color: var(--ink);
 }
 
 .stats-grid {
@@ -15,9 +15,9 @@
   margin-bottom: 2rem;
 }
 
-.stat-card {
-  background: #0f1424;
-  border: 1px solid #1e2440;
+.analytics-page .stat-card {
+  background: var(--theme-panel);
+  border: 1px solid var(--theme-line);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   display: flex;
@@ -26,35 +26,35 @@
   transition: all 0.2s ease;
 }
 
-.stat-card:hover {
-  border-color: #4f46e5;
-  background: #151a2f;
+.analytics-page .stat-card:hover {
+  border-color: var(--theme-accent);
+  background: var(--theme-panel-raised);
 }
 
-.stat-icon {
+.analytics-page .stat-icon {
   font-size: 1.5rem;
 }
 
-.stat-content h3 {
+.analytics-page .stat-content h3 {
   font-size: 0.75rem;
   margin: 0;
   opacity: 0.7;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
-  color: #d6d9ff;
+  color: var(--muted);
 }
 
-.stat-value {
+.analytics-page .stat-value {
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
-  color: #4f46e5;
+  color: var(--theme-accent);
 }
 
 .chart-section {
-  background: #0f1424;
-  border: 1px solid #1e2440;
+  background: var(--theme-panel);
+  border: 1px solid var(--theme-line);
   border-radius: 8px;
   padding: 2rem;
 }
@@ -62,7 +62,7 @@
 .chart-section h2 {
   font-size: 1.3rem;
   margin-bottom: 1.5rem;
-  color: #eaeaf0;
+  color: var(--ink);
   margin-top: 0;
 }
 
@@ -88,15 +88,15 @@
     gap: 0.75rem;
   }
 
-  .stat-card {
+  .analytics-page .stat-card {
     padding: 0.6rem 0.8rem;
   }
 
-  .stat-icon {
+  .analytics-page .stat-icon {
     font-size: 1.3rem;
   }
 
-  .stat-value {
+  .analytics-page .stat-value {
     font-size: 1.1rem;
   }
 
@@ -110,4 +110,5 @@
     grid-template-columns: 1fr;
   }
 }
+
 

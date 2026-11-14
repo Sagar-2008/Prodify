@@ -23,6 +23,7 @@
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
+  transition: grid-template-columns .22s ease;
 }
 
 .zen-dashboard *, .zen-dashboard *::before, .zen-dashboard *::after { box-sizing: border-box; }
@@ -82,7 +83,8 @@
 .dashboard-content { width: min(100%, 1440px); flex: 1; margin: 0 auto; padding: 29px 37px 35px; }
 .dashboard-footer { display: flex; justify-content: space-between; gap: 16px; padding: 14px 37px 17px; border-top: 1px solid var(--line); color: #506073; font-size: 9px; letter-spacing: .015em; }
 .dashboard-footer i { padding: 0 5px; color: #74889a; font-style: normal; }
-.mobile-menu-button, .sidebar-scrim { display: none; }
+.mobile-menu-button { display: grid; place-items: center; width: 33px; height: 33px; flex: 0 0 33px; margin-left: -8px; border: 1px solid var(--line); border-radius: 7px; color: #b9cad6; background: rgba(255, 255, 255, .025); cursor: pointer; }
+.sidebar-scrim { display: none; }
 
 /* Command center */
 .overview-page { display: flex; flex-direction: column; gap: 17px; }
@@ -200,6 +202,7 @@
 .zen-dashboard[data-theme="namek"] { --theme-bg: #081510; --theme-sidebar: #07130e; --theme-topbar: rgba(8, 21, 16, .92); --theme-panel: #0e2018; --theme-panel-raised: #142a20; --theme-line: rgba(99, 211, 162, .15); --theme-accent: #62d6ab; --theme-warm: #79d8e5; --theme-glow: rgba(55, 179, 125, .2); --blue: #62d6ab; --orange: #79d8e5; }
 .zen-dashboard[data-theme="kai"] { --theme-bg: #0e0b19; --theme-sidebar: #0c0916; --theme-topbar: rgba(14, 11, 25, .92); --theme-panel: #171329; --theme-panel-raised: #201a36; --theme-line: rgba(177, 157, 255, .17); --theme-accent: #b5a0ff; --theme-warm: #78d9e9; --theme-glow: rgba(143, 105, 229, .22); --blue: #b5a0ff; --orange: #78d9e9; }
 .zen-dashboard[data-theme="rose"] { --theme-bg: #170b15; --theme-sidebar: #130910; --theme-topbar: rgba(23, 11, 21, .92); --theme-panel: #211222; --theme-panel-raised: #2d172a; --theme-line: rgba(255, 140, 194, .17); --theme-accent: #ff92c8; --theme-warm: #ff7770; --theme-glow: rgba(221, 76, 141, .2); --blue: #ff92c8; --orange: #ff7770; }
+.zen-dashboard[data-theme] { --line: var(--theme-line); --panel: var(--theme-panel); --panel-soft: var(--theme-panel-raised); --blue: var(--theme-accent); --orange: var(--theme-warm); }
 .zen-dashboard[data-theme] .dashboard-nav .nav-item.active { color: var(--theme-accent); background: color-mix(in srgb, var(--theme-accent) 13%, transparent); border-color: color-mix(in srgb, var(--theme-accent) 28%, transparent); }
 .zen-dashboard[data-theme] .dashboard-nav .nav-item.active > svg:first-child,
 .zen-dashboard[data-theme] .eyebrow,
@@ -207,6 +210,18 @@
 .zen-dashboard[data-theme] .panel-footer-link,
 .zen-dashboard[data-theme] .focus-clock,
 .zen-dashboard[data-theme] .overview-quest-check:hover { color: var(--theme-accent); }
+.zen-dashboard[data-theme] .brand-mark { border-color: color-mix(in srgb, var(--theme-accent) 66%, transparent); box-shadow: 0 0 21px color-mix(in srgb, var(--theme-accent) 14%, transparent), inset 0 0 14px color-mix(in srgb, var(--theme-accent) 11%, transparent); }
+.zen-dashboard[data-theme] .brand-mark::before { border-color: var(--theme-accent); }
+.zen-dashboard[data-theme] .brand-mark::after { border-color: var(--theme-warm); }
+.zen-dashboard[data-theme] .brand-mark span { background: var(--theme-warm); box-shadow: 0 0 9px var(--theme-warm); }
+.zen-dashboard[data-theme] .topbar-dot { background: var(--theme-accent); box-shadow: 0 0 8px color-mix(in srgb, var(--theme-accent) 60%, transparent); }
+.zen-dashboard[data-theme] .hero-copy h1 span,
+.zen-dashboard[data-theme] .focus-start-button,
+.zen-dashboard[data-theme] .overview-quest-xp { color: var(--theme-warm); }
+.zen-dashboard[data-theme] .hero-index span:first-child { color: var(--theme-accent); }
+.zen-dashboard[data-theme] .power-rank strong { color: var(--theme-warm); }
+.zen-dashboard[data-theme] :is(.metric-blue, .metric-green) { color: var(--theme-accent); background: color-mix(in srgb, var(--theme-accent) 13%, transparent); }
+.zen-dashboard[data-theme] :is(.metric-orange, .metric-violet) { color: var(--theme-warm); background: color-mix(in srgb, var(--theme-warm) 13%, transparent); }
 .zen-dashboard[data-theme] .overview-hero { border-color: var(--theme-line); background: radial-gradient(ellipse at 84% 36%, var(--theme-glow), transparent 34%), radial-gradient(ellipse at 75% 120%, color-mix(in srgb, var(--theme-warm) 14%, transparent), transparent 42%), linear-gradient(110deg, var(--theme-panel-raised), var(--theme-panel) 70%); }
 .zen-dashboard[data-theme] .overview-panel,
 .zen-dashboard[data-theme] .metric-card,
@@ -222,6 +237,35 @@
 .zen-dashboard[data-theme] .power-core { border-color: color-mix(in srgb, var(--theme-accent) 70%, transparent); box-shadow: 0 0 27px var(--theme-glow), inset 0 0 26px color-mix(in srgb, var(--theme-accent) 16%, transparent); }
 .zen-dashboard[data-theme] :focus-visible { outline-color: var(--theme-accent); }
 .zen-dashboard[data-theme] .dashboard-nav .nav-item:hover { color: var(--theme-accent); background: color-mix(in srgb, var(--theme-accent) 9%, transparent); border-color: color-mix(in srgb, var(--theme-accent) 18%, transparent); }
+.zen-dashboard[data-theme] .progress-page { --p-ink: var(--ink); --p-muted: var(--muted); --p-dim: var(--subtle); --p-line: var(--theme-line); --p-panel: var(--theme-panel); }
+.zen-dashboard[data-theme] :is(.progress-page .page-heading .eyebrow, .progress-page .entry-form .eyebrow, .progress-page .goals-intro .eyebrow, .progress-page .section-heading .eyebrow, .progress-page .add-category-link) { color: var(--theme-accent); }
+.zen-dashboard[data-theme] :is(.progress-page .page-heading .eyebrow svg, .progress-page .profile-emblem, .progress-page .xp-pill, .progress-page .profile-xp, .progress-page .profile-summary-copy p b) { color: var(--theme-warm); }
+.zen-dashboard[data-theme] :is(.progress-page .quest-summary-mark, .progress-page .empty-mark, .progress-page .goals-orbit, .progress-page .activity-icon, .progress-page .dojo-stat-feature > svg, .progress-page .settings-form .entry-form-heading > svg, .progress-page .poster-placeholder) { border-color: color-mix(in srgb, var(--theme-accent) 35%, transparent); color: var(--theme-accent); background-color: color-mix(in srgb, var(--theme-accent) 10%, var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.progress-page .goal-tag, .progress-page .palette-current) { border-color: color-mix(in srgb, var(--theme-accent) 28%, transparent); color: var(--theme-accent); background-color: color-mix(in srgb, var(--theme-accent) 7%, var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.progress-page .filter-row button.selected, .progress-page .solved-button.solved) { border-color: color-mix(in srgb, var(--theme-accent) 38%, transparent); color: var(--theme-accent); background-color: color-mix(in srgb, var(--theme-accent) 12%, var(--theme-panel)); }
+.zen-dashboard[data-theme] .progress-page .check-field input { accent-color: var(--theme-accent); }
+.zen-dashboard[data-theme] :is(.progress-page .quest-summary, .progress-page .goals-intro, .progress-page .power-profile-summary, .progress-page .dojo-stat-feature) { border-color: var(--theme-line); background-image: radial-gradient(ellipse at 0 50%, color-mix(in srgb, var(--theme-accent) 12%, transparent), transparent 46%), linear-gradient(140deg, var(--theme-panel-raised), var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.analytics-page h1, .chart-section h2, .journal-header h1, .modal-header h2, .music-section-title, .music-track-list-title, .music-title-compact) { color: var(--ink); }
+.zen-dashboard[data-theme] :is(.analytics-page .stat-card, .analytics-page .chart-section, .journal-page .stat-card, .journal-calendar-section) { border-color: var(--theme-line); background: linear-gradient(145deg, var(--theme-panel-raised), var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.analytics-page .stat-content h3, .analytics-page .stat-value, .journal-page .stat-number, .journal-page .entry-title, .journal-page .close-btn, .journal-page .mood-btn.active, .journal-page .mood-btn:hover) { color: var(--theme-accent); }
+.zen-dashboard[data-theme] :is(.habits-page .habit-input input, .habits-page .day-card, .habits-page .chip) { border-color: var(--theme-line); background: var(--theme-panel); color: var(--ink); }
+.zen-dashboard[data-theme] .habits-page .habit-input button { border-color: color-mix(in srgb, var(--theme-accent) 45%, transparent); color: var(--theme-bg); background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 72%, white), var(--theme-accent)); }
+.zen-dashboard[data-theme] :is(.music-player-compact, .music-preset, .music-track-list, .music-track-item) { border-color: var(--theme-line); }
+.zen-dashboard[data-theme] .music-player-compact { background: linear-gradient(145deg, var(--theme-panel-raised), var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.music-preset, .music-track-list, .music-track-item) { background-color: color-mix(in srgb, var(--theme-panel-raised) 62%, transparent); }
+.zen-dashboard[data-theme] .music-preset.active { border-color: color-mix(in srgb, var(--theme-accent) 65%, transparent); background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 74%, var(--theme-panel)), color-mix(in srgb, var(--theme-accent) 30%, var(--theme-panel))); }
+.zen-dashboard[data-theme] .music-btn { background-color: color-mix(in srgb, var(--theme-accent) 26%, transparent); }
+.zen-dashboard[data-theme] .track-indicator { color: var(--theme-accent); }
+.zen-dashboard[data-theme] .music-progress-slider::-webkit-slider-thumb,
+.zen-dashboard[data-theme] .music-progress-slider::-moz-range-thumb { background: var(--theme-accent); }
+.zen-dashboard[data-theme] :is(.music-track-item.active, .music-track-item:hover) { border-color: color-mix(in srgb, var(--theme-accent) 50%, transparent); background: color-mix(in srgb, var(--theme-accent) 17%, var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.journal-page .journal-modal, .journal-page .journal-title-input, .journal-page .journal-content-textarea) { border-color: var(--theme-line); background-color: var(--theme-panel); color: var(--ink); }
+.zen-dashboard[data-theme] :is(.journal-page .month-nav button, .journal-page .add-entry-btn, .journal-page .save-btn) { border-color: color-mix(in srgb, var(--theme-accent) 55%, transparent); color: var(--theme-bg); background: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 74%, white), var(--theme-accent)); }
+.zen-dashboard[data-theme] :is(.journal-page .day-card, .journal-page .mood-btn, .journal-page .cancel-btn) { border-color: var(--theme-line); background-color: color-mix(in srgb, var(--theme-accent) 8%, var(--theme-panel)); }
+.zen-dashboard[data-theme] :is(.journal-page .mood-btn.active, .journal-page .day-card:hover:not(.empty), .journal-page .journal-title-input:focus, .journal-page .journal-content-textarea:focus) { border-color: var(--theme-accent); background-color: color-mix(in srgb, var(--theme-accent) 14%, var(--theme-panel)); }
+.zen-dashboard[data-theme] .journal-page .journal-header h1,
+.zen-dashboard[data-theme] .journal-page .modal-header h2,
+.zen-dashboard[data-theme] .journal-page .stat-number { background-image: linear-gradient(135deg, color-mix(in srgb, var(--theme-accent) 60%, white), var(--theme-accent)); }
 .zen-dashboard :is(.primary-action, .secondary-action, .action-button, .quiet-button, .focus-start-button, .small-add-button, .icon-button, .solved-button):not(:disabled):active { transform: translateY(0) scale(.985); }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -247,10 +291,15 @@
 @media (max-width: 860px) {
   .zen-dashboard { grid-template-columns: minmax(0, 1fr); }
   .dashboard-sidebar { position: fixed; inset: 0 auto 0 0; width: 270px; min-height: 0; height: 100dvh; transform: translateX(-103%); transition: transform .22s ease; box-shadow: 22px 0 55px rgba(0, 0, 0, .35); }
+  .zen-dashboard.sidebar-collapsed .dashboard-sidebar { display: flex; }
   .dashboard-sidebar.sidebar-open { transform: translateX(0); }
   .sidebar-scrim { position: fixed; inset: 0; z-index: 19; display: block; border: 0; background: rgba(3, 8, 13, .67); }
-  .mobile-menu-button { display: grid; place-items: center; width: 33px; height: 33px; margin-left: -8px; border: 1px solid var(--line); border-radius: 7px; color: #b9cad6; background: rgba(255, 255, 255, .025); cursor: pointer; }
   .dashboard-topbar { justify-content: flex-start; }.topbar-right { margin-left: auto; }
+}
+
+@media (min-width: 861px) {
+  .zen-dashboard.sidebar-collapsed { grid-template-columns: minmax(0, 1fr); }
+  .zen-dashboard.sidebar-collapsed .dashboard-sidebar { display: none; }
 }
 @media (max-width: 700px) {
   .dashboard-content { padding: 19px 17px 26px; }
@@ -283,3 +332,4 @@
 @media (prefers-reduced-motion: reduce) {
   .overview-page, .progress-page, .hero-copy .eyebrow, .hero-date, .hero-copy h1, .hero-description, .hero-actions, .metric-card, .overview-panel, .orbit-one, .orbit-two, .power-core, .spark-a, .spark-b, .spark-c { animation: none !important; }
 }
+

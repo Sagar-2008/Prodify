@@ -1,5 +1,5 @@
 .habits-page {
-    color: #fff;
+    color: var(--ink);
 }
 
 .habit-input {
@@ -11,18 +11,18 @@
 .habit-input input {
     flex: 1;
     padding: 10px;
-    background: #0e1625;
-    border: 1px solid #394b7a;
+    background: var(--theme-panel);
+    border: 1px solid var(--theme-line);
     border-radius: 8px;
-    color: #fff;
+    color: var(--ink);
 }
 
 .habit-input button {
     padding: 10px 16px;
-    background: #4f46e5;
+    background: var(--theme-accent);
     border: none;
     border-radius: 8px;
-    color: #fff;
+    color: var(--theme-bg);
 }
 
 .habit-chips {
@@ -33,7 +33,7 @@
 }
 
 .chip {
-    background: #121c2e;
+    background: var(--theme-panel-raised);
     padding: 6px 10px;
     border-radius: 16px;
     display: flex;
@@ -48,14 +48,27 @@
     cursor: pointer;
 }
 
-.month-nav {
+.habits-page .month-nav {
     display: flex;
+    align-items: center;
     justify-content: center;
     gap: 12px;
     margin: 12px 0;
 }
 
-.weekday-row {
+.habits-page .month-nav button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--theme-line);
+    border-radius: 8px;
+    color: var(--theme-accent);
+    background: var(--theme-panel-raised);
+    cursor: pointer;
+}
+
+.habits-page .month-nav span { color: var(--ink); }
+
+.habits-page .weekday-row {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     margin-bottom: 6px;
@@ -69,14 +82,14 @@
     gap: 10px;
 }
 
-.day-card {
-    background: #0c1322;
+.habits-page .day-card {
+    background: var(--theme-panel);
     border-radius: 12px;
     padding: 8px;
     min-height: 90px;
 }
 
-.day-num {
+.habits-page .day-num {
     font-size: 12px;
     opacity: 0.7;
     margin-bottom: 6px;
@@ -88,3 +101,4 @@
     font-size: 12px;
     margin-bottom: 4px;
 }
+

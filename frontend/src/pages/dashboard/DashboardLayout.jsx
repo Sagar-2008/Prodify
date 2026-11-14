@@ -34,7 +34,7 @@ export default function DashboardLayout() {
   const location = useLocation();
   const { playing, preset, track } = useMusic();
   const { xp, rank, quests, power, profile, posterUrl, syncStatus, syncError, syncNow } = useProductivity();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.matchMedia("(min-width: 861px)").matches);
   const [quoteIndex, setQuoteIndex] = useState(0);
 
   useEffect(() => {
@@ -66,10 +66,14 @@ export default function DashboardLayout() {
     navigate("/login");
   };
 
+  const closeSidebarOnMobile = () => {
+    if (window.matchMedia("(max-width: 860px)").matches) setSidebarOpen(false);
+  };
+
   return (
-    <div className="zen-dashboard" data-theme={profile.theme || "capsule"}>
+    <div className={`zen-dashboard ${sidebarOpen ? "" : "sidebar-collapsed"}`} data-theme={profile.theme || "capsule"}>
       {sidebarOpen && <button className="sidebar-scrim" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
-      <aside className={`dashboard-sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
+      <aside id="dashboard-sidebar" className={`dashboard-sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
         <button className="brand-lockup" onClick={() => navigate("/dashboard")} aria-label="ZENKAI OS home">
           <span className="brand-mark"><span /></span>
           <span><strong>ZENKAI</strong><small>PERSONAL OS</small></span>
@@ -82,7 +86,7 @@ export default function DashboardLayout() {
               {group.items.map(({ label, path, icon }) => {
                 const active = path === "/dashboard" ? location.pathname === path : location.pathname.startsWith(path);
                 return (
-                  <NavLink key={path} to={path} className={`nav-item ${active ? "active" : ""}`} onClick={() => setSidebarOpen(false)}>
+                  <NavLink key={path} to={path} className={`nav-item ${active ? "active" : ""}`} onClick={closeSidebarOnMobile}>
                     {createElement(icon, { size: 17, strokeWidth: 1.8 })}<span>{label}</span>{active && <ChevronRight size={14} className="nav-active-indicator" />}
                   </NavLink>
                 );
@@ -98,7 +102,7 @@ export default function DashboardLayout() {
             {power?.nextRank && <div className="rank-next-note">Next form at level {power.nextRankLevel} · {Number(power.nextRankXp).toLocaleString()} XP target · {Math.round(power.rankProgress)}%</div>}
           </div>
           {playing && (
-            <NavLink to="/dashboard/music" className="mini-player" onClick={() => setSidebarOpen(false)}>
+            <NavLink to="/dashboard/music" className="mini-player" onClick={closeSidebarOnMobile}>
               <span className="mini-player-icon">{preset?.icon || "♫"}</span><span><small>NOW PLAYING</small><strong>{track?.title || preset?.name || "Soundscape"}</strong></span><AudioLines size={15} />
             </NavLink>
           )}
@@ -108,7 +112,7 @@ export default function DashboardLayout() {
 
       <main className="dashboard-main">
         <header className="dashboard-topbar">
-          <button className="mobile-menu-button" aria-label={sidebarOpen ? "Close menu" : "Open menu"} onClick={() => setSidebarOpen((open) => !open)}>{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</button>
+          <button className="mobile-menu-button" aria-label={sidebarOpen ? "Close navigation" : "Open navigation"} aria-controls="dashboard-sidebar" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen((open) => !open)}>{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</button>
           <div className="breadcrumb"><span>ZENKAI OS</span><span className="breadcrumb-slash">/</span><strong>{currentItem?.label || "Overview"}</strong></div>
           <div className="topbar-right"><span className="topbar-date">{dateLabel}</span><span className="topbar-quote">{quotes[quoteIndex]}</span><span className="topbar-dot" />{posterUrl && <button type="button" className="topbar-poster-button" title="Edit favorite character poster" aria-label="Edit favorite character poster" onClick={() => navigate("/dashboard/settings")}><img src={posterUrl} alt="" /></button>}<span className="topbar-rank">{rank.name}</span>{syncStatus === "error" ? <button type="button" className="sync-indicator sync-error" title={syncError} onClick={() => syncNow().catch(() => {})}>Sync issue · Retry</button> : <span className={`sync-indicator sync-${syncStatus}`} role="status">{syncStatus === "saving" ? "Saving" : syncStatus === "syncing" ? "Syncing" : "Synced"}</span>}</div>
         </header>
@@ -118,3 +122,4 @@ export default function DashboardLayout() {
     </div>
   );
 }
+
