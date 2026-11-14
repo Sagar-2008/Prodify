@@ -95,4 +95,3 @@
 @media (prefers-reduced-motion: reduce) {
   .pomodoro-container::before, .pomodoro-appearance-button, .pomodoro-clear-background, .settings-btn, .pomodoro-task, .pomodoro-controls button { transition: none; }
 }
-
